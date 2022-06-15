@@ -14,6 +14,10 @@ function App() {
         {id: v1(), title: "Redux", isDone: false}
     ])
 
+    const changeStatus = (taskId: string, status: boolean) => {
+        setTasks(tasks.map(task => task.id === taskId ? {...task, isDone: status} : task))
+    }
+
     const addTask = (taskTitle: string) => {
         const newTask = {id: v1(), title: taskTitle, isDone: false}
         const newTasks = [newTask, ...tasks]
@@ -44,7 +48,9 @@ function App() {
                       tasks={filteredTasks}
                       removeTask={removeTask}
                       filterTasks={filterTasks}
-                      addTask={addTask}/>
+                      addTask={addTask}
+                      changeStatus={changeStatus}
+                      filter={filter}/>
         </div>
     );
 }
