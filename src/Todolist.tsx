@@ -21,16 +21,21 @@ export type TasksPropsType = {
 export const Todolist = (props: TodolistPropsType) => {
 
     const [taskTitle, setTaskTitle] = useState('')
+    const [error, setError] = useState<string | null>(null)
 
     const addTaskHandler = () => {
-        if (taskTitle) {
-            props.addTask(taskTitle)
+        if (taskTitle.trim() === '') {
+            setError('Title is required')
+            setTaskTitle('')
+            return
         }
+        props.addTask(taskTitle.trim())
         setTaskTitle('')
     }
 
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
         setTaskTitle(e.currentTarget.value)
+        setError('')
     }
 
     const onKeyDownHandler = (e:KeyboardEvent<HTMLInputElement>) => {
@@ -55,8 +60,9 @@ export const Todolist = (props: TodolistPropsType) => {
         <div>
             <h3>{props.title}</h3>
             <div>
-                <input value={taskTitle} onChange={onChangeHandler} onKeyDown={onKeyDownHandler}/>
+                <input className={error ? 'error' : ''} value={taskTitle} onChange={onChangeHandler} onKeyDown={onKeyDownHandler}/>
                 <Button name={'+'} callback={addTaskHandler}/>
+                {error && <div className={'error-message'}>{error}</div>}
             </div>
             <ul>
                 {props.tasks.map(task => {
@@ -70,9 +76,9 @@ export const Todolist = (props: TodolistPropsType) => {
 
             </ul>
             <div>
-                <Button name={'All'} callback={()=>filterTasksHandler('All')}/>
-                <Button name={'Active'} callback={()=>filterTasksHandler('Active')}/>
-                <Button name={'Completed'} callback={()=>filterTasksHandler('Completed')}/>
+                <Button className={props.filter === 'All' ? 'active-filter' : ''} name={'All'} callback={()=>filterTasksHandler('All')}/>
+                <Button className={props.filter === 'Active' ? 'active-filter' : ''} name={'Active'} callback={()=>filterTasksHandler('Active')}/>
+                <Button className={props.filter === 'Completed' ? 'active-filter' : ''} name={'Completed'} callback={()=>filterTasksHandler('Completed')}/>
             </div>
         </div>
     );
