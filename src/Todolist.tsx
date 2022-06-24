@@ -1,6 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {FilterType} from "./App";
 import {Button} from "./components/Button";
+import {Checkbox} from "./components/Checkbox";
 
 type TodolistPropsType = {
     title?: string | number
@@ -28,9 +29,8 @@ export const Todolist = (props: TodolistPropsType) => {
     const tasksToRender = props.tasks.length ?
         props.tasks.map(task => {
                 return (
-                    <li key={task.id} className={task.isDone ? 'isDone' : ''}><input
-                        onChange={(event) => onChangeCheckboxHandler(task.id, event.currentTarget.checked)}
-                        type="checkbox" checked={task.isDone}/>
+                    <li key={task.id} className={task.isDone ? 'isDone' : ''}>
+                        <Checkbox checked={task.isDone} callback={(e)=>onChangeCheckboxHandler(task.id, e.currentTarget.checked)}/>
                         <Button name={'X'} callback={() => removeTasksHandler(task.id)}/>
                         <span>{task.title}</span>
                     </li>)
