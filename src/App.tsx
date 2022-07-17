@@ -8,7 +8,7 @@ import {Menu} from "@material-ui/icons";
 
 export type FilterType = 'All' | 'Active' | 'Completed'
 
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     filter: FilterType
@@ -44,37 +44,19 @@ function App() {
     })
 
 
+    const removeTask = (todolistId: string, taskId: string) => {
+        setTasks({...tasks, [todolistId]: tasks[todolistId].filter(task => task.id !== taskId)})
+    }
     const addTask = (todolistId: string, taskTitle: string) => {
         const newTask = {id: v1(), title: taskTitle, isDone: false}
         setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})
     }
-
-    const removeTask = (todolistId: string, taskId: string) => {
-        setTasks({...tasks, [todolistId]: tasks[todolistId].filter(task => task.id !== taskId)})
-    }
-
-    const filterTasks = (todolistId: string, value: FilterType) => {
-        setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, filter: value} : tl))
-    }
-
-    const changeStatus = (todolistId: string, taskId: string, status: boolean) => {
+    const changeTaskStatus = (todolistId: string, taskId: string, status: boolean) => {
         setTasks({
             ...tasks,
             [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone: status} : task)
         })
     }
-
-    const removeTodolist = (todolistId: string) => {
-        setTodolists(todolists.filter(tl => tl.id !== todolistId))
-        delete tasks[todolistId]
-    }
-
-    const addTodolist = (totolistTitle: string) => {
-        const newTodolistId = v1()
-        setTodolists([{id: newTodolistId, title: totolistTitle, filter: 'All'}, ...todolists])
-        setTasks({...tasks, [newTodolistId]: []})
-    }
-
     const editTaskTitle = (todolistId: string, taskId: string, taskTitle: string) => {
         setTasks({
             ...tasks,
@@ -82,8 +64,20 @@ function App() {
         })
     }
 
-    const editTodolistTitle = (todolistId: string, newTitle: string) => {
+    const removeTodolist = (todolistId: string) => {
+        setTodolists(todolists.filter(tl => tl.id !== todolistId))
+        delete tasks[todolistId]
+    }
+    const addTodolist = (totolistTitle: string) => {
+        const newTodolistId = v1()
+        setTodolists([{id: newTodolistId, title: totolistTitle, filter: 'All'}, ...todolists])
+        setTasks({...tasks, [newTodolistId]: []})
+    }
+    const changeTodolistTitle = (todolistId: string, newTitle: string) => {
         setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title: newTitle} : tl))
+    }
+    const changeFilter = (todolistId: string, value: FilterType) => {
+        setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, filter: value} : tl))
     }
 
     const todolistsToRender = todolists.map(tl => {
@@ -110,13 +104,14 @@ function App() {
                               todolistId={tl.id}
                               tasks={filteredTasks}
 
-                              addTask={addTask}
                               removeTask={removeTask}
-                              filterTasks={filterTasks}
-                              changeStatus={changeStatus}
-                              removeTodolist={removeTodolist}
+                              addTask={addTask}
+                              changeTaskStatus={changeTaskStatus}
                               editTaskTitle={editTaskTitle}
-                              editTodolistTitle={editTodolistTitle}/>
+
+                              removeTodolist={removeTodolist}
+                              changeFilter={changeFilter}
+                              changeTodolistTitle={changeTodolistTitle}/>
                 </Paper>
             </Grid>
         )
