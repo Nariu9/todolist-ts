@@ -2,9 +2,20 @@ import React, {useState} from 'react';
 import './App.css';
 import {TasksPropsType, Todolist} from './Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from "./components/AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
-import {Menu} from "@material-ui/icons";
+import {AddItemForm} from './components/AddItemForm';
+import {
+    AppBar,
+    Button,
+    Container,
+    createTheme,
+    CssBaseline,
+    Grid,
+    IconButton,
+    Paper, ThemeProvider,
+    Toolbar,
+    Typography
+} from '@material-ui/core';
+import {Brightness4, BrightnessHigh, Menu} from '@material-ui/icons';
 
 export type FilterType = 'All' | 'Active' | 'Completed'
 
@@ -14,11 +25,30 @@ export type TodolistType = {
     filter: FilterType
 }
 
-type TaskType = {
+export type TasksStateType = {
     [todolistID: string]: Array<TasksPropsType>
 }
+type colorMode = 'dark' | 'light'
 
 function App() {
+    const [mode, setMode] = useState<colorMode>('dark')
+    const theme = createTheme({
+        palette: {
+            primary: {
+                light: '#69d2f9',
+                main: '#27a1c6',
+                dark: '#007295',
+                contrastText: '#fff',
+            },
+            secondary: {
+                light: '#ffffae',
+                main: '#ffde7d',
+                dark: '#caac4e',
+                contrastText: '#000',
+            },
+            type: mode
+        }
+    })
 
     const todolistID_1 = v1()
     const todolistID_2 = v1()
@@ -28,7 +58,7 @@ function App() {
         {id: todolistID_2, title: 'What to buy', filter: 'All'},
     ])
 
-    const [tasks, setTasks] = useState<TaskType>({
+    const [tasks, setTasks] = useState<TasksStateType>({
         [todolistID_1]: [
             {id: v1(), title: 'HTML&CSS', isDone: true},
             {id: v1(), title: 'JS', isDone: true},
@@ -43,6 +73,9 @@ function App() {
         ]
     })
 
+    const toggleColorMode = (prevMode: colorMode) => {
+        setMode(prevMode === 'light' ? 'dark' : 'light')
+    }
 
     const removeTask = (todolistId: string, taskId: string) => {
         setTasks({...tasks, [todolistId]: tasks[todolistId].filter(task => task.id !== taskId)})
@@ -57,7 +90,7 @@ function App() {
             [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone: status} : task)
         })
     }
-    const editTaskTitle = (todolistId: string, taskId: string, taskTitle: string) => {
+    const changeTaskTitle = (todolistId: string, taskId: string, taskTitle: string) => {
         setTasks({
             ...tasks,
             [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title: taskTitle} : task)
@@ -97,7 +130,7 @@ function App() {
 
         return (
             <Grid item key={tl.id}>
-                <Paper elevation={3} style={{padding: "20px"}}>
+                <Paper elevation={3} style={{padding: '20px'}}>
                     <Todolist key={tl.id}
                               title={tl.title}
                               filter={tl.filter}
@@ -107,7 +140,7 @@ function App() {
                               removeTask={removeTask}
                               addTask={addTask}
                               changeTaskStatus={changeTaskStatus}
-                              editTaskTitle={editTaskTitle}
+                              changeTaskTitle={changeTaskTitle}
 
                               removeTodolist={removeTodolist}
                               changeFilter={changeFilter}
@@ -118,27 +151,34 @@ function App() {
     })
 
     return (
-        <div className="App">
-            <AppBar position="static">
-                <Toolbar style={{justifyContent: "space-between"}}>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        Todolists
-                    </Typography>
-                    <Button color="inherit" variant={"outlined"}>Login</Button>
-                </Toolbar>
-            </AppBar>
-            <Container fixed>
-                <Grid container style={{padding: "20px 0 20px 20px"}}>
-                    <AddItemForm addItem={addTodolist}/>
-                </Grid>
-                <Grid container spacing={3}>
-                    {todolistsToRender}
-                </Grid>
-            </Container>
-
+        <div>
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
+                <AppBar position="static">
+                    <Toolbar style={{justifyContent: 'space-between'}}>
+                        <IconButton edge="start" color="inherit" aria-label="menu">
+                            <Menu/>
+                        </IconButton>
+                        <Typography variant="h6">
+                            Todolists
+                        </Typography>
+                        <div>
+                            <IconButton onClick={() => toggleColorMode(mode)}>
+                                {mode === 'dark' ? <BrightnessHigh/> : <Brightness4/>}
+                            </IconButton>
+                            <Button color="inherit" variant={'outlined'}>Login</Button>
+                        </div>
+                    </Toolbar>
+                </AppBar>
+                <Container fixed>
+                    <Grid container style={{padding: '20px 0 20px 20px'}}>
+                        <AddItemForm addItem={addTodolist}/>
+                    </Grid>
+                    <Grid container spacing={3}>
+                        {todolistsToRender}
+                    </Grid>
+                </Container>
+            </ThemeProvider>
         </div>
     );
 }
