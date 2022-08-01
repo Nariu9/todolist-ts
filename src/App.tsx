@@ -28,10 +28,10 @@ export type TodolistType = {
 export type TasksStateType = {
     [todolistID: string]: Array<TasksPropsType>
 }
-type colorMode = 'dark' | 'light'
 
 function App() {
-    const [mode, setMode] = useState<colorMode>('dark')
+
+    const [mode, setMode] = useState<'dark' | 'light'>('dark')
     const theme = createTheme({
         palette: {
             primary: {
@@ -73,8 +73,8 @@ function App() {
         ]
     })
 
-    const toggleColorMode = (prevMode: colorMode) => {
-        setMode(prevMode === 'light' ? 'dark' : 'light')
+    const toggleColorMode = () => {
+        setMode(mode === 'light' ? 'dark' : 'light')
     }
 
     const removeTask = (todolistId: string, taskId: string) => {
@@ -163,7 +163,7 @@ function App() {
                             Todolists
                         </Typography>
                         <div>
-                            <IconButton onClick={() => toggleColorMode(mode)}>
+                            <IconButton onClick={toggleColorMode}>
                                 {mode === 'dark' ? <BrightnessHigh/> : <Brightness4/>}
                             </IconButton>
                             <Button color="inherit" variant={'outlined'}>Login</Button>
