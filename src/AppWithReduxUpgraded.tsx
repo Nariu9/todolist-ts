@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import './App.css';
 import {TasksPropsType} from './Todolist';
 
@@ -64,9 +64,9 @@ function AppWithReduxUpgraded() {
     const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
     const dispatch = useDispatch()
 
-    const addTodolist = (todolistTitle: string) => {
+    const addTodolist = useCallback((todolistTitle: string) => {
         dispatch(addTodolistAC(todolistTitle))
-    }
+    }, [dispatch])
 
     //UI
 
