@@ -1,6 +1,7 @@
 import {combineReducers, compose, legacy_createStore as createStore} from 'redux';
 import {tasksReducer} from './tasks-reducer';
 import {todolistsReducer} from './todolists-reducer';
+import {colorThemesReducer} from './colorThemes-reducer';
 
 declare global {
     interface Window {
@@ -10,7 +11,8 @@ declare global {
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todolistsReducer
+    todolists: todolistsReducer,
+    colorThemes: colorThemesReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
