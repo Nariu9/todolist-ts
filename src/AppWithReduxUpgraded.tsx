@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {TasksPropsType} from './Todolist';
 
@@ -20,6 +20,7 @@ import {addTodolistAC} from './state/todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 import {TodolistUpgraded} from './TodolistUpgraded';
+import {changeThemeAC, ColorThemeType} from './state/colorThemes-reducer';
 
 export type FilterType = 'All' | 'Active' | 'Completed'
 
@@ -36,8 +37,7 @@ export type TasksStateType = {
 function AppWithReduxUpgraded() {
 
     //color theme logic
-
-    const [mode, setMode] = useState<'dark' | 'light'>('dark')
+    const colorTheme = useSelector<AppRootStateType, ColorThemeType>(state => state.colorThemes.colorTheme)
     const theme = createTheme({
         palette: {
             primary: {
@@ -52,12 +52,10 @@ function AppWithReduxUpgraded() {
                 dark: '#caac4e',
                 contrastText: '#000',
             },
-            type: mode
+            type: colorTheme
         }
     })
-    const toggleColorMode = () => {
-        setMode(mode === 'light' ? 'dark' : 'light')
-    }
+    const toggleColorTheme = () => dispatch(changeThemeAC(colorTheme))
 
     //BLL
 
@@ -96,8 +94,8 @@ function AppWithReduxUpgraded() {
                             Todolists
                         </Typography>
                         <div>
-                            <IconButton onClick={toggleColorMode}>
-                                {mode === 'dark' ? <BrightnessHigh/> : <Brightness4/>}
+                            <IconButton onClick={toggleColorTheme}>
+                                {colorTheme === 'dark' ? <BrightnessHigh/> : <Brightness4/>}
                             </IconButton>
                             <Button color="inherit" variant={'outlined'}>Login</Button>
                         </div>
