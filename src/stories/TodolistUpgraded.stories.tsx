@@ -18,7 +18,7 @@ export const TodolistUpgradedStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TodolistUpgradedStory.args = {
     title: 'What to learn',
-    filter: 'All',
+    filter: 'all',
     todolistId: 'todolistID_1'
 }
 

@@ -1,10 +1,10 @@
-import React, {memo, useCallback} from 'react';
+import React, {ChangeEvent, memo, useCallback} from 'react';
 import {useDispatch} from 'react-redux';
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from '../state/tasks-reducer';
 import {Checkbox, IconButton, ListItem} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {EditableSpan} from './EditableSpan';
-import {TaskType} from '../TodolistUpgraded';
+import {TaskStatuses, TaskType} from '../api/todolist-api';
 
 type TaskPropsType = {
     task: TaskType
@@ -17,7 +17,8 @@ export const Task: React.FC<TaskPropsType> = memo(({task, todolistId}) => {
         dispatch(removeTaskAC(todolistId, task.id))
     }
 
-    const onChangeCheckboxHandler = (status: boolean) => {
+    const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
         dispatch(changeTaskStatusAC(todolistId, task.id, status))
     }
 
@@ -26,9 +27,9 @@ export const Task: React.FC<TaskPropsType> = memo(({task, todolistId}) => {
     }, [dispatch, todolistId, task.id])
 
     return (
-        <ListItem disableGutters divider className={task.isDone ? 'task isDone' : 'task'}>
-            <Checkbox checked={task.isDone}
-                      onChange={(e) => onChangeCheckboxHandler(e.currentTarget.checked)}
+        <ListItem disableGutters divider className={task.status === TaskStatuses.Completed ? 'task isDone' : 'task'}>
+            <Checkbox checked={task.status === TaskStatuses.Completed}
+                      onChange={onChangeCheckboxHandler}
                       color={'primary'}
                       size={'small'}/>
             <IconButton onClick={removeTasksHandler}

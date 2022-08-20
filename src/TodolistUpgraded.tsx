@@ -1,5 +1,4 @@
 import React, {memo, useCallback} from 'react';
-import {FilterType} from './AppWithReduxUpgraded';
 import {AddItemForm} from './components/AddItemForm';
 import {EditableSpan} from './components/EditableSpan';
 import {Button, IconButton, List} from '@material-ui/core';
@@ -7,8 +6,9 @@ import {Delete} from '@material-ui/icons';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 import {addTaskAC} from './state/tasks-reducer';
-import {changeFilterAC, changeTodolistTitleAC, removeTodolistAC} from './state/todolists-reducer';
+import {changeFilterAC, changeTodolistTitleAC, FilterType, removeTodolistAC} from './state/todolists-reducer';
 import {Task} from './components/Task';
+import {TaskStatuses, TaskType} from './api/todolist-api';
 
 type TodolistUpgradedPropsType = {
     title: string
@@ -16,25 +16,20 @@ type TodolistUpgradedPropsType = {
     todolistId: string
 }
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
 
 export const TodolistUpgraded: React.FC<TodolistUpgradedPropsType> = memo(({title, filter, todolistId}) => {
     console.log('TodolistUpgraded called')
 
-    let tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[todolistId])
+    let tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todolistId])
     const dispatch = useDispatch()
 
 
     switch (filter) {
-        case 'Active':
-            tasks = tasks.filter(task => !task.isDone)
+        case 'active':
+            tasks = tasks.filter(t => t.status === TaskStatuses.New)
             break;
-        case 'Completed':
-            tasks = tasks.filter(task => task.isDone)
+        case 'completed':
+            tasks = tasks.filter(t => t.status === TaskStatuses.Completed)
             break;
     }
 
@@ -72,13 +67,13 @@ export const TodolistUpgraded: React.FC<TodolistUpgradedPropsType> = memo(({titl
                 {tasksToRender}
             </List>
             <div>
-                <Button size={'small'} variant={'contained'} color={filter === 'All' ? 'secondary' : 'primary'}
-                        onClick={filterTasksHandler('All')}>All</Button>
-                <Button size={'small'} variant={'contained'} color={filter === 'Active' ? 'secondary' : 'primary'}
-                        onClick={filterTasksHandler('Active')}>Active</Button>
+                <Button size={'small'} variant={'contained'} color={filter === 'all' ? 'secondary' : 'primary'}
+                        onClick={filterTasksHandler('all')}>All</Button>
+                <Button size={'small'} variant={'contained'} color={filter === 'active' ? 'secondary' : 'primary'}
+                        onClick={filterTasksHandler('active')}>Active</Button>
                 <Button size={'small'} variant={'contained'}
-                        color={filter === 'Completed' ? 'secondary' : 'primary'}
-                        onClick={filterTasksHandler('Completed')}>Completed</Button>
+                        color={filter === 'completed' ? 'secondary' : 'primary'}
+                        onClick={filterTasksHandler('completed')}>Completed</Button>
             </div>
         </div>
     );

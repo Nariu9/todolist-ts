@@ -1,7 +1,5 @@
 import React, {useCallback} from 'react';
 import './App.css';
-import {TasksPropsType} from './Todolist';
-
 import {AddItemForm} from './components/AddItemForm';
 import {
     AppBar,
@@ -16,23 +14,12 @@ import {
     Typography
 } from '@material-ui/core';
 import {Brightness4, BrightnessHigh, Menu} from '@material-ui/icons';
-import {addTodolistAC} from './state/todolists-reducer';
+import {addTodolistAC, TodolistDomainType} from './state/todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 import {TodolistUpgraded} from './TodolistUpgraded';
 import {changeThemeAC, ColorThemeType} from './state/colorThemes-reducer';
 
-export type FilterType = 'All' | 'Active' | 'Completed'
-
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterType
-}
-
-export type TasksStateType = {
-    [todolistID: string]: Array<TasksPropsType>
-}
 
 function AppWithReduxUpgraded() {
 
@@ -59,7 +46,7 @@ function AppWithReduxUpgraded() {
 
     //BLL
 
-    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
+    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const dispatch = useDispatch()
 
     const addTodolist = useCallback((todolistTitle: string) => {

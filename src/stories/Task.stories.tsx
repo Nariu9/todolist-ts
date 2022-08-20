@@ -4,7 +4,8 @@ import {Task} from '../components/Task';
 import {ReduxStoreProviderDecorator} from './decorators/ReduxStoreProviderDecorator';
 import {useSelector} from 'react-redux';
 import {AppRootStateType} from '../state/store';
-import {TaskType} from '../TodolistUpgraded';
+import {TaskPriorities, TaskStatuses, TaskType} from '../api/todolist-api';
+
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -20,14 +21,32 @@ const Template: ComponentStory<typeof Task> = (args) => <Task {...args}/>;
 export const TaskIsDoneStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TaskIsDoneStory.args = {
-    task: {id: '1', title: 'JS', isDone: true},
+    task: {
+        id: '1', title: 'JS', description: '',
+        todoListId: 'todolistID_1',
+        status: TaskStatuses.Completed,
+        order: 0,
+        priority: TaskPriorities.Low,
+        startDate: '',
+        deadline: '',
+        addedDate: ''
+    },
     todolistId: 'todolistID_1'
 }
 
 export const TaskIsNotDoneStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TaskIsNotDoneStory.args = {
-    task: {id: '2', title: 'Honey', isDone: false},
+    task: {
+        id: '2', title: 'Honey', description: '',
+        todoListId: 'todolistID_2',
+        status: TaskStatuses.New,
+        order: 0,
+        priority: TaskPriorities.Low,
+        startDate: '',
+        deadline: '',
+        addedDate: ''
+    },
     todolistId: 'todolistID_2'
 }
 

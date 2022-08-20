@@ -1,6 +1,7 @@
 import {TasksStateType} from '../App';
 import {v1} from 'uuid';
 import {addTodolistAT, removeTodolistAT} from './todolists-reducer';
+import {TaskPriorities, TaskStatuses} from '../api/todolist-api';
 
 export type removeTasksAT = ReturnType<typeof removeTaskAC>
 export type addTaskAT = ReturnType<typeof addTaskAC>
@@ -23,14 +24,23 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case 'ADD-TASK':
             return {
                 ...state,
-                [action.todolistId]: [{id: v1(), title: action.taskTitle, isDone: false}, ...state[action.todolistId]]
+                [action.todolistId]: [{
+                    id: v1(), title: action.taskTitle, description: '',
+                    todoListId: action.todolistId,
+                    status: TaskStatuses.New,
+                    order: 0,
+                    priority: TaskPriorities.Low,
+                    startDate: '',
+                    deadline: '',
+                    addedDate: ''
+                }, ...state[action.todolistId]]
             }
         case 'CHANGE-TASK-STATUS':
             return {
                 ...state,
                 [action.todolistId]: state[action.todolistId].map(t => t.id === action.taskId ? {
                     ...t,
-                    isDone: action.status
+                    status: action.status
                 } : t)
             }
         case 'CHANGE-TASK-TITLE':
@@ -57,7 +67,7 @@ export const removeTaskAC = (todolistId: string, taskId: string) => ({
 export const addTaskAC = (todolistId: string, taskTitle: string) => ({
     type: 'ADD-TASK', todolistId, taskTitle
 }) as const
-export const changeTaskStatusAC = (todolistId: string, taskId: string, status: boolean) => ({
+export const changeTaskStatusAC = (todolistId: string, taskId: string, status: TaskStatuses) => ({
     type: 'CHANGE-TASK-STATUS', todolistId, taskId, status
 }) as const
 export const changeTaskTitleAC = (todolistId: string, taskId: string, taskTitle: string) => ({

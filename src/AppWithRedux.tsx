@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {TasksPropsType, Todolist} from './Todolist';
+import {Todolist} from './Todolist';
 import {AddItemForm} from './components/AddItemForm';
 import {
     AppBar,
@@ -18,23 +18,16 @@ import {Brightness4, BrightnessHigh, Menu} from '@material-ui/icons';
 import {
     addTodolistAC,
     changeFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC,
+    changeTodolistTitleAC, FilterType,
+    removeTodolistAC, TodolistDomainType,
 } from './state/todolists-reducer';
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/tasks-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
-
-export type FilterType = 'All' | 'Active' | 'Completed'
-
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterType
-}
+import {TaskStatuses, TaskType} from './api/todolist-api';
 
 export type TasksStateType = {
-    [todolistID: string]: Array<TasksPropsType>
+    [todolistID: string]: TaskType[]
 }
 
 function AppWithRedux() {
@@ -66,7 +59,7 @@ function AppWithRedux() {
     //BLL
 
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
+    const todolists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists)
     const dispatch = useDispatch()
 
     const removeTask = (todolistId: string, taskId: string) => {
@@ -75,7 +68,7 @@ function AppWithRedux() {
     const addTask = (todolistId: string, taskTitle: string) => {
         dispatch(addTaskAC(todolistId, taskTitle))
     }
-    const changeTaskStatus = (todolistId: string, taskId: string, status: boolean) => {
+    const changeTaskStatus = (todolistId: string, taskId: string, status: TaskStatuses) => {
         dispatch(changeTaskStatusAC(todolistId, taskId, status))
     }
     const changeTaskTitle = (todolistId: string, taskId: string, taskTitle: string) => {
@@ -101,11 +94,11 @@ function AppWithRedux() {
 
         let filteredTasks
         switch (tl.filter) {
-            case 'Active':
-                filteredTasks = tasks[tl.id].filter(task => !task.isDone)
+            case 'active':
+                filteredTasks = tasks[tl.id].filter(t => t.status === TaskStatuses.New)
                 break;
-            case 'Completed':
-                filteredTasks = tasks[tl.id].filter(task => task.isDone)
+            case 'completed':
+                filteredTasks = tasks[tl.id].filter(t => t.status === TaskStatuses.Completed)
                 break;
             default:
                 filteredTasks = tasks[tl.id]
