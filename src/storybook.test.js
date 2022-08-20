@@ -16,7 +16,9 @@ const getMatchOptions = ({ context: { fileName } }) => {
 
 initStoryshots({
     // your own configuration
+    suite: 'Image storyshots',
     test: imageSnapshot({
+        storybookUrl: 'http://localhost:9009',
         // invoke the function above here
         getMatchOptions,
     }),
