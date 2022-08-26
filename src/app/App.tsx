@@ -1,29 +1,28 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import './App.css';
-import {AddItemForm} from './components/AddItemForm';
 import {
     AppBar,
     Button,
     Container,
     createTheme,
     CssBaseline,
-    Grid,
     IconButton,
-    Paper, ThemeProvider,
+    ThemeProvider,
     Toolbar,
     Typography
 } from '@material-ui/core';
 import {Brightness4, BrightnessHigh, Menu} from '@material-ui/icons';
-import {addTodolistAC, TodolistDomainType} from './state/todolists-reducer';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from './state/store';
-import {TodolistUpgraded} from './TodolistUpgraded';
-import {changeThemeAC, ColorThemeType} from './state/colorThemes-reducer';
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from './store';
+import {changeThemeAC, ColorThemeType} from './colorThemes-reducer';
+import {useAppDispatch} from './hooks';
+import {TodolistsList} from '../features/TodolistsList/TodolistsList';
 
 
-function AppWithReduxUpgraded() {
+function App() {
 
     //color theme logic
+    const dispatch = useAppDispatch()
     const colorTheme = useSelector<AppRootStateType, ColorThemeType>(state => state.colorThemes.colorTheme)
     const theme = createTheme({
         palette: {
@@ -43,30 +42,6 @@ function AppWithReduxUpgraded() {
         }
     })
     const toggleColorTheme = () => dispatch(changeThemeAC(colorTheme))
-
-    //BLL
-
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-    const dispatch = useDispatch()
-
-    const addTodolist = useCallback((todolistTitle: string) => {
-        dispatch(addTodolistAC(todolistTitle))
-    }, [dispatch])
-
-    //UI
-
-    const todolistsToRender = todolists.map(tl => {
-        return (
-            <Grid item key={tl.id}>
-                <Paper elevation={3} style={{padding: '20px'}}>
-                    <TodolistUpgraded key={tl.id}
-                                      title={tl.title}
-                                      filter={tl.filter}
-                                      todolistId={tl.id}/>
-                </Paper>
-            </Grid>
-        )
-    })
 
     return (
         <div>
@@ -89,17 +64,11 @@ function AppWithReduxUpgraded() {
                     </Toolbar>
                 </AppBar>
                 <Container fixed>
-                    <Grid container style={{padding: '20px 0 20px 20px'}}>
-                        <AddItemForm addItem={addTodolist}/>
-                    </Grid>
-                    <Grid container spacing={3}>
-                        {todolistsToRender}
-                    </Grid>
+                    <TodolistsList/>
                 </Container>
             </ThemeProvider>
         </div>
     );
 }
 
-
-export default AppWithReduxUpgraded;
+export default App;

@@ -2,13 +2,13 @@ export type ColorThemeType = 'dark' | 'light'
 type ColorThemesStateType = {
     colorTheme: ColorThemeType
 }
-type ActionType = ReturnType<typeof changeThemeAC>
+export type ThemeActionType = ReturnType<typeof changeThemeAC>
 
 const initialState: ColorThemesStateType = {
     colorTheme: 'dark'
 }
 
-export const colorThemesReducer = (state: ColorThemesStateType = initialState, action: ActionType): ColorThemesStateType => {
+export const colorThemesReducer = (state: ColorThemesStateType = initialState, action: ThemeActionType): ColorThemesStateType => {
     switch (action.type) {
         case 'CHANGE-COLOR-THEME':
             return {...state, colorTheme: action.payload.colorTheme === 'light' ? 'dark' : 'light'}
