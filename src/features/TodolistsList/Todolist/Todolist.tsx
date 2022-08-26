@@ -1,14 +1,15 @@
-import React, {memo, useCallback} from 'react';
-import {AddItemForm} from './components/AddItemForm';
-import {EditableSpan} from './components/EditableSpan';
+import React, {memo, useCallback, useEffect} from 'react';
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import {Button, IconButton, List} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from './state/store';
-import {addTaskAC} from './state/tasks-reducer';
-import {changeFilterAC, changeTodolistTitleAC, FilterType, removeTodolistAC} from './state/todolists-reducer';
-import {Task} from './components/Task';
-import {TaskStatuses, TaskType} from './api/todolist-api';
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from '../../../app/store';
+import {addTasksTC, setTasksTC} from '../tasks-reducer';
+import {changeFilterAC, changeTodolistTitleTC, FilterType, removeTodolistTC} from '../todolists-reducer';
+import {Task} from './Task/Task';
+import {TaskStatuses, TaskType} from '../../../api/todolists-api';
+import {useAppDispatch} from '../../../app/hooks';
 
 type TodolistUpgradedPropsType = {
     title: string
@@ -17,11 +18,11 @@ type TodolistUpgradedPropsType = {
 }
 
 
-export const TodolistUpgraded: React.FC<TodolistUpgradedPropsType> = memo(({title, filter, todolistId}) => {
-    console.log('TodolistUpgraded called')
+export const Todolist: React.FC<TodolistUpgradedPropsType> = memo(({title, filter, todolistId}) => {
+    console.log('Todolist called')
 
     let tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todolistId])
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
 
     switch (filter) {
@@ -38,21 +39,25 @@ export const TodolistUpgraded: React.FC<TodolistUpgradedPropsType> = memo(({titl
     }, [dispatch, todolistId])
 
     const removeTodolistHandler = () => {
-        dispatch(removeTodolistAC(todolistId))
+        dispatch(removeTodolistTC(todolistId))
     }
 
     const addTaskHandler = useCallback((taskTitle: string) => {
-        dispatch(addTaskAC(todolistId, taskTitle))
+        dispatch(addTasksTC(todolistId, taskTitle))
     }, [dispatch, todolistId])
 
 
     const editTodolistTitleHandler = useCallback((newTitle: string) => {
-        dispatch(changeTodolistTitleAC(todolistId, newTitle))
+        dispatch(changeTodolistTitleTC(todolistId, newTitle))
     }, [dispatch, todolistId])
 
-    const tasksToRender = tasks.length
+    const tasksToRender = tasks && tasks.length
         ? tasks.map(task => <Task key={task.id} task={task} todolistId={todolistId}/>)
         : <span>No tasks in this list</span>
+
+    useEffect(() => {
+        dispatch(setTasksTC(todolistId))
+    }, [dispatch, todolistId])
 
     return (
         <div>
