@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import {AddItemForm} from '../components/AddItemForm';
+import {AddItemForm} from '../components/AddItemForm/AddItemForm';
 import {action} from '@storybook/addon-actions';
 import {IconButton, TextField} from '@material-ui/core';
 import {AddBox} from '@material-ui/icons';

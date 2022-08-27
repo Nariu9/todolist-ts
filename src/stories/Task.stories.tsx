@@ -1,10 +1,10 @@
 import React from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
-import {Task} from '../components/Task';
+import {Task} from '../features/TodolistsList/Todolist/Task/Task';
 import {ReduxStoreProviderDecorator} from './decorators/ReduxStoreProviderDecorator';
 import {useSelector} from 'react-redux';
-import {AppRootStateType} from '../state/store';
-import {TaskPriorities, TaskStatuses, TaskType} from '../api/todolist-api';
+import {AppRootStateType} from '../app/store';
+import {TaskPriorities, TaskStatuses, TaskType} from '../api/todolists-api';
 
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

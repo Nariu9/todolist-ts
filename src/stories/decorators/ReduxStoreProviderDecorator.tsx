@@ -1,11 +1,12 @@
 import {Provider} from 'react-redux';
-import {AppRootStateType} from '../../state/store';
-import {combineReducers, legacy_createStore} from 'redux';
-import {tasksReducer} from '../../state/tasks-reducer';
-import {todolistsReducer} from '../../state/todolists-reducer';
-import {colorThemesReducer} from '../../state/colorThemes-reducer';
+import {AppRootStateType} from '../../app/store';
+import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
+import {tasksReducer} from '../../features/TodolistsList/tasks-reducer';
+import {todolistsReducer} from '../../features/TodolistsList/todolists-reducer';
+import {colorThemesReducer} from '../../app/colorThemes-reducer';
 import {v1} from 'uuid';
-import {TaskPriorities, TaskStatuses} from '../../api/todolist-api';
+import {TaskPriorities, TaskStatuses} from '../../api/todolists-api';
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
@@ -14,7 +15,7 @@ const rootReducer = combineReducers({
 })
 
 const initialState: AppRootStateType = {
-    tasks: {
+    tasks: {/*
         ['todolistID_1']: [
             {
                 id: v1(),
@@ -114,18 +115,18 @@ const initialState: AppRootStateType = {
                 deadline: '',
                 addedDate: ''
             }
-        ]
+        ]*/
     },
     todolists: [
-        {id: 'todolistID_1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: 'todolistID_2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}
+        /*{id: 'todolistID_1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
+        {id: 'todolistID_2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}*/
     ],
     colorThemes: {
         colorTheme: 'light'
     }
 }
 
-export const storyBookStore = legacy_createStore(rootReducer, initialState)
+export const storyBookStore = legacy_createStore(rootReducer, initialState, applyMiddleware(thunk))
 
 export const ReduxStoreProviderDecorator = (storyFn: () => JSX.Element) => {
     return <Provider store={storyBookStore}>{storyFn()}</Provider>
