@@ -1,17 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import App from './App';
-// import AppWithReducers from './AppWithReducers';
-// import AppWithRedux from './AppWithRedux';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from 'react-redux';
-import {store} from './state/store';
-import AppWithReduxUpgraded from './AppWithReduxUpgraded';
+import {store} from './app/store';
+import App from './app/App';
 
 
 ReactDOM.render(<Provider store={store}>
-    <AppWithReduxUpgraded/>
+    <App/>
 </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
