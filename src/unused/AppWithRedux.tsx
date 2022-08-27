@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import './App.css';
+import '../app/App.css';
 import {Todolist} from './Todolist';
-import {AddItemForm} from './components/AddItemForm';
+import {AddItemForm} from '../components/AddItemForm/AddItemForm';
 import {
     AppBar,
     Button,
@@ -10,23 +10,27 @@ import {
     CssBaseline,
     Grid,
     IconButton,
-    Paper, ThemeProvider,
+    Paper,
+    ThemeProvider,
     Toolbar,
     Typography
 } from '@material-ui/core';
 import {Brightness4, BrightnessHigh, Menu} from '@material-ui/icons';
 import {
-    addTodolistAC,
+    addTodolistTC,
     changeFilterAC,
-    changeTodolistTitleAC, FilterType,
-    removeTodolistAC, TodolistDomainType,
-} from './state/todolists-reducer';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/tasks-reducer';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from './state/store';
-import {TaskStatuses, TaskType} from './api/todolist-api';
+    changeTodolistTitleAC,
+    FilterType,
+    removeTodolistAC,
+    TodolistDomainType,
+} from '../features/TodolistsList/todolists-reducer';
+import {addTasksTC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from '../features/TodolistsList/tasks-reducer';
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from '../app/store';
+import {TaskStatuses, TaskType} from '../api/todolists-api';
+import {useAppDispatch} from '../app/hooks';
 
-export type TasksStateType = {
+type TasksStateType = {
     [todolistID: string]: TaskType[]
 }
 
@@ -60,13 +64,13 @@ function AppWithRedux() {
 
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const todolists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const removeTask = (todolistId: string, taskId: string) => {
         dispatch(removeTaskAC(todolistId, taskId))
     }
     const addTask = (todolistId: string, taskTitle: string) => {
-        dispatch(addTaskAC(todolistId, taskTitle))
+        dispatch(addTasksTC(todolistId, taskTitle))
     }
     const changeTaskStatus = (todolistId: string, taskId: string, status: TaskStatuses) => {
         dispatch(changeTaskStatusAC(todolistId, taskId, status))
@@ -79,7 +83,7 @@ function AppWithRedux() {
         dispatch(removeTodolistAC(todolistId))
     }
     const addTodolist = (todolistTitle: string) => {
-        dispatch(addTodolistAC(todolistTitle))
+        dispatch(addTodolistTC(todolistTitle))
     }
     const changeTodolistTitle = (todolistId: string, newTitle: string) => {
         dispatch(changeTodolistTitleAC(todolistId, newTitle))

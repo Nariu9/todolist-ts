@@ -1,10 +1,10 @@
 import React from 'react';
-import {AddItemForm} from './components/AddItemForm';
-import {EditableSpan} from './components/EditableSpan';
+import {AddItemForm} from '../components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../components/EditableSpan/EditableSpan';
 import {Button, Checkbox, IconButton, List, ListItem} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
-import {TaskStatuses, TaskType} from './api/todolist-api';
-import {FilterType} from './state/todolists-reducer';
+import {TaskStatuses, TaskType} from '../api/todolists-api';
+import {FilterType} from '../features/TodolistsList/todolists-reducer';
 
 type TodolistPropsType = {
     title: string
