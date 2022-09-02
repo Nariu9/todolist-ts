@@ -1,8 +1,6 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
-import {Button, IconButton, List} from '@material-ui/core';
-import {Delete} from '@material-ui/icons';
 import {useSelector} from 'react-redux';
 import {AppRootStateType} from '../../../app/store';
 import {addTasksTC, setTasksTC} from '../tasks-reducer';
@@ -10,6 +8,8 @@ import {changeFilterAC, changeTodolistTitleTC, FilterType, removeTodolistTC} fro
 import {Task} from './Task/Task';
 import {TaskStatuses, TaskType} from '../../../api/todolists-api';
 import {useAppDispatch} from '../../../app/hooks';
+import {Button, IconButton, List} from '@mui/material';
+import {Delete} from '@mui/icons-material';
 
 type TodolistUpgradedPropsType = {
     title: string

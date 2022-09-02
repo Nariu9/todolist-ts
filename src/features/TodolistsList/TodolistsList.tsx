@@ -3,9 +3,9 @@ import {useSelector} from 'react-redux';
 import {AppRootStateType} from '../../app/store';
 import {addTodolistTC, fetchTodolistsTC, TodolistDomainType} from './todolists-reducer';
 import {useAppDispatch} from '../../app/hooks';
-import {Grid, Paper} from '@material-ui/core';
 import {Todolist} from './Todolist/Todolist';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
+import {Grid, Paper} from '@mui/material';
 
 export const TodolistsList: React.FC = () => {
 

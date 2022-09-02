@@ -1,5 +1,10 @@
 import React from 'react';
 import './App.css';
+import {useSelector} from 'react-redux';
+import {AppRootStateType} from './store';
+import {changeThemeAC, ColorThemeType} from './colorThemes-reducer';
+import {useAppDispatch} from './hooks';
+import {TodolistsList} from '../features/TodolistsList/TodolistsList';
 import {
     AppBar,
     Button,
@@ -10,13 +15,8 @@ import {
     ThemeProvider,
     Toolbar,
     Typography
-} from '@material-ui/core';
-import {Brightness4, BrightnessHigh, Menu} from '@material-ui/icons';
-import {useSelector} from 'react-redux';
-import {AppRootStateType} from './store';
-import {changeThemeAC, ColorThemeType} from './colorThemes-reducer';
-import {useAppDispatch} from './hooks';
-import {TodolistsList} from '../features/TodolistsList/TodolistsList';
+} from '@mui/material';
+import {Brightness4, BrightnessHigh, Menu} from '@mui/icons-material';
 
 
 function App() {
@@ -26,19 +26,13 @@ function App() {
     const colorTheme = useSelector<AppRootStateType, ColorThemeType>(state => state.colorThemes.colorTheme)
     const theme = createTheme({
         palette: {
+            mode: colorTheme,
             primary: {
-                light: '#69d2f9',
                 main: '#27a1c6',
-                dark: '#007295',
-                contrastText: '#fff',
             },
             secondary: {
-                light: '#ffffae',
                 main: '#ffde7d',
-                dark: '#caac4e',
-                contrastText: '#000',
             },
-            type: colorTheme
         }
     })
     const toggleColorTheme = () => dispatch(changeThemeAC(colorTheme))

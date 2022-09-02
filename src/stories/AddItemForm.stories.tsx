@@ -3,8 +3,9 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import {AddItemForm} from '../components/AddItemForm/AddItemForm';
 import {action} from '@storybook/addon-actions';
-import {IconButton, TextField} from '@material-ui/core';
-import {AddBox} from '@material-ui/icons';
+import {IconButton, TextField} from '@mui/material';
+import {AddBox} from '@mui/icons-material';
+
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

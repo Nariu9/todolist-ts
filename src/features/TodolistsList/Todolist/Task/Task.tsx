@@ -1,10 +1,11 @@
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import {removeTasksTC, updateTasksTC} from '../../tasks-reducer';
-import {Checkbox, IconButton, ListItem} from '@material-ui/core';
-import {Delete} from '@material-ui/icons';
+
 import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
 import {TaskStatuses, TaskType} from '../../../../api/todolists-api';
 import {useAppDispatch} from '../../../../app/hooks';
+import {Checkbox, IconButton, ListItem} from '@mui/material';
+import {Delete} from '@mui/icons-material';
 
 type TaskPropsType = {
     task: TaskType
