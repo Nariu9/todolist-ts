@@ -44,7 +44,7 @@ export type TodolistType = {
     addedDate: string
     order: number
 }
-type ResponseType<T = {}> = {
+export type ResponseType<T = {}> = {
     data: T
     messages: string[]
     fieldsErrors: string[]
@@ -64,6 +64,12 @@ export enum TaskPriorities {
     Hi = 2,
     Urgently = 3,
     Later = 4
+}
+
+export enum ResultCodes {
+    successfully = 0,
+    error = 1,
+    captcha_required = 10
 }
 
 export type TaskType = {
