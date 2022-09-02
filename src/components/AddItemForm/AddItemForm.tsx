@@ -1,12 +1,13 @@
-import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent, memo, useState} from 'react';
 import {IconButton, TextField} from '@mui/material';
 import {AddBox} from '@mui/icons-material';
 
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
-export const AddItemForm = memo((props: AddItemFormPropsType) => {
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, disabled}) => {
     console.log('AddItemForm called')
 
     const [itemTitle, setItemTitle] = useState('')
@@ -18,7 +19,7 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
             setItemTitle('')
             return
         }
-        props.addItem(itemTitle.trim())
+        addItem(itemTitle.trim())
         setItemTitle('')
     }
 
@@ -40,8 +41,9 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
                        onChange={onChangeHandler}
                        onKeyDown={onKeyDownHandler}
                        error={!!error}
-                       helperText={error}/>
-            <IconButton onClick={addTaskHandler} color={'primary'}>
+                       helperText={error}
+                       disabled={disabled}/>
+            <IconButton onClick={addTaskHandler} color={'primary'} disabled={disabled}>
                 <AddBox/>
             </IconButton>
         </div>

@@ -3,27 +3,30 @@ import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import {useSelector} from 'react-redux';
 import {AppRootStateType} from '../../../app/store';
-import {addTasksTC, setTasksTC} from '../tasks-reducer';
+import {addTasksTC, fetchTasksTC} from '../tasks-reducer';
 import {changeFilterAC, changeTodolistTitleTC, FilterType, removeTodolistTC} from '../todolists-reducer';
 import {Task} from './Task/Task';
 import {TaskStatuses, TaskType} from '../../../api/todolists-api';
 import {useAppDispatch} from '../../../app/hooks';
 import {Button, IconButton, List} from '@mui/material';
 import {Delete} from '@mui/icons-material';
+import {RequestStatusType} from '../../../app/app-reducer';
 
 type TodolistUpgradedPropsType = {
     title: string
     filter: FilterType
     todolistId: string
+    entityStatus: RequestStatusType
 }
 
 
-export const Todolist: React.FC<TodolistUpgradedPropsType> = memo(({title, filter, todolistId}) => {
+export const Todolist: React.FC<TodolistUpgradedPropsType> = memo(({title, filter, todolistId, entityStatus}) => {
     console.log('Todolist called')
 
     let tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todolistId])
     const dispatch = useAppDispatch()
 
+    const isDisabled = entityStatus === 'loading'
 
     switch (filter) {
         case 'active':
@@ -52,22 +55,23 @@ export const Todolist: React.FC<TodolistUpgradedPropsType> = memo(({title, filte
     }, [dispatch, todolistId])
 
     const tasksToRender = tasks && tasks.length
-        ? tasks.map(task => <Task key={task.id} task={task} todolistId={todolistId}/>)
+        ? tasks.map(task => <Task key={task.id} task={task} todolistId={todolistId}
+                                  disabled={isDisabled}/>)
         : <span>No tasks in this list</span>
 
     useEffect(() => {
-        dispatch(setTasksTC(todolistId))
+        dispatch(fetchTasksTC(todolistId))
     }, [dispatch, todolistId])
 
     return (
         <div>
             <h3>
-                <EditableSpan value={title} onChange={editTodolistTitleHandler}/>
-                <IconButton onClick={removeTodolistHandler} color={'secondary'}>
+                <EditableSpan value={title} onChange={editTodolistTitleHandler} disabled={isDisabled}/>
+                <IconButton onClick={removeTodolistHandler} color={'secondary'} disabled={isDisabled}>
                     <Delete/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTaskHandler}/>
+            <AddItemForm addItem={addTaskHandler} disabled={isDisabled}/>
             <List>
                 {tasksToRender}
             </List>

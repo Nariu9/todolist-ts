@@ -4,6 +4,7 @@ import {TextField} from '@mui/material';
 type EditableSpanPropsType = {
     value: string
     onChange: (value: string) => void
+    disabled: boolean
 }
 export const EditableSpan = memo((props: EditableSpanPropsType) => {
     console.log('EditableSpan called')
@@ -17,6 +18,7 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
     const offEditMode = () => {
         setEditMode(false)
         text.trim() !== '' && props.onChange(text)
+        setText('')
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +30,7 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
         e.key === 'Enter' && offEditMode()
     }
 
-    return editMode
+    return editMode && !props.disabled
         ?
         <TextField value={text}
                    onChange={onChangeHandler}

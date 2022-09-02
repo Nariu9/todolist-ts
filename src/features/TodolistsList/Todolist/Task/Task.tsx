@@ -10,8 +10,9 @@ import {Delete} from '@mui/icons-material';
 type TaskPropsType = {
     task: TaskType
     todolistId: string
+    disabled: boolean
 }
-export const Task: React.FC<TaskPropsType> = memo(({task, todolistId}) => {
+export const Task: React.FC<TaskPropsType> = memo(({task, todolistId, disabled}) => {
     const dispatch = useAppDispatch()
 
     const removeTasksHandler = () => {
@@ -38,6 +39,6 @@ export const Task: React.FC<TaskPropsType> = memo(({task, todolistId}) => {
                         size={'small'}>
                 <Delete fontSize={'small'}/>
             </IconButton>
-            <EditableSpan value={task.title} onChange={editTaskTitleHandler}/>
+            <EditableSpan value={task.title} onChange={editTaskTitleHandler} disabled={disabled}/>
         </ListItem>)
 })
