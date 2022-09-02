@@ -3,7 +3,7 @@ import {AppRootStateType} from '../../app/store';
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import {tasksReducer} from '../../features/TodolistsList/tasks-reducer';
 import {todolistsReducer} from '../../features/TodolistsList/todolists-reducer';
-import {colorThemesReducer} from '../../app/colorThemes-reducer';
+import {appReducer} from '../../app/app-reducer';
 import {v1} from 'uuid';
 import {TaskPriorities, TaskStatuses} from '../../api/todolists-api';
 import thunk from 'redux-thunk';
@@ -11,7 +11,7 @@ import thunk from 'redux-thunk';
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
-    colorThemes: colorThemesReducer
+    app: appReducer
 })
 
 const initialState: AppRootStateType = {
@@ -121,8 +121,10 @@ const initialState: AppRootStateType = {
         /*{id: 'todolistID_1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
         {id: 'todolistID_2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}*/
     ],
-    colorThemes: {
-        colorTheme: 'light'
+    app: {
+        colorTheme: 'light',
+        status: 'idle',
+        error: null
     }
 }
 

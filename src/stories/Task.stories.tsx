@@ -52,7 +52,7 @@ TaskIsNotDoneStory.args = {
 
 const TaskWithRedux = () => {
     const task = useSelector<AppRootStateType, TaskType>(state => state.tasks['todolistID_1'][0])
-    return <Task task={task} todolistId={'todolistID_1'}/>
+    return <Task task={task} todolistId={'todolistID_1'} disabled={false}/>
 }
 const Template1: ComponentStory<typeof TaskWithRedux> = () => {
     return <TaskWithRedux/>
