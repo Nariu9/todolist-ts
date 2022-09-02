@@ -1,3 +1,4 @@
+/*
 import React, {useState} from 'react';
 import '../app/App.css';
 import {Todolist} from './Todolist';
@@ -166,3 +167,7 @@ function AppWithRedux() {
 
 
 export default AppWithRedux;
+*/
+
+let c = 15
+export default c

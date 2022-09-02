@@ -1,3 +1,4 @@
+/*
 import React, {useReducer, useState} from 'react';
 import '../app/App.css';
 import {Todolist} from './Todolist';
@@ -172,8 +173,8 @@ function AppWithReducers() {
         dispatchToTasks(removeTaskAC(todolistId, taskId))
     }
     const addTask = (todolistId: string, taskTitle: string) => {
-        /*const newTask = {id: v1(), title: taskTitle, isDone: false}
-        setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})*/
+        /!*const newTask = {id: v1(), title: taskTitle, isDone: false}
+        setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})*!/
         dispatchToTasks(addTaskAC(todolistId, {
             id: v1(),
             title: taskTitle,
@@ -188,31 +189,31 @@ function AppWithReducers() {
         }))
     }
     const changeTaskStatus = (todolistId: string, taskId: string, status: TaskStatuses) => {
-        /*setTasks({
+        /!*setTasks({
             ...tasks,
             [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone: status} : task)
-        })*/
+        })*!/
         dispatchToTasks(changeTaskStatusAC(todolistId, taskId, status))
     }
     const changeTaskTitle = (todolistId: string, taskId: string, taskTitle: string) => {
-        /*setTasks({
+        /!*setTasks({
             ...tasks,
             [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title: taskTitle} : task)
-        })*/
+        })*!/
         dispatchToTasks(changeTaskTitleAC(todolistId, taskId, taskTitle))
     }
 
     const removeTodolist = (todolistId: string) => {
-        /*setTodolists(todolists.filter(tl => tl.id !== todolistId))
-        delete tasks[todolistId]*/
+        /!*setTodolists(todolists.filter(tl => tl.id !== todolistId))
+        delete tasks[todolistId]*!/
         const action = removeTodolistAC(todolistId)
         dispatchToTodolists(action)
         dispatchToTasks(action)
     }
     const addTodolist = (totolistTitle: string) => {
-        /*const newTodolistId = v1()
+        /!*const newTodolistId = v1()
         setTodolists([{id: newTodolistId, title: totolistTitle, filter: 'all'}, ...todolists])
-        setTasks({...tasks, [newTodolistId]: []})*/
+        setTasks({...tasks, [newTodolistId]: []})*!/
         const action = addTodolistAC({id: v1(), title: totolistTitle, addedDate: '', order: 0})
         dispatchToTodolists(action)
         dispatchToTasks(action)
@@ -300,3 +301,7 @@ function AppWithReducers() {
 
 
 export default AppWithReducers;
+*/
+
+let b = 15
+export default b

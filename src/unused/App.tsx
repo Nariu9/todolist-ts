@@ -1,3 +1,4 @@
+/*
 import React, {useState} from 'react';
 import '../app/App.css';
 import {Todolist} from './Todolist';
@@ -278,3 +279,7 @@ function App() {
 
 
 export default App;
+*/
+
+let a = 15
+export default a

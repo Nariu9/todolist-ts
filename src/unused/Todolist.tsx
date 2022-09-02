@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import {AddItemForm} from '../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../components/EditableSpan/EditableSpan';
@@ -94,3 +95,7 @@ export const Todolist = (props: TodolistPropsType) => {
         </div>
     );
 }
+*/
+
+let d = 15
+export default d
