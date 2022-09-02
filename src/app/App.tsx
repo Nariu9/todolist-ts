@@ -1,9 +1,7 @@
 import React from 'react';
 import './App.css';
-import {useSelector} from 'react-redux';
-import {AppRootStateType} from './store';
-import {changeThemeAC, ColorThemeType} from './colorThemes-reducer';
-import {useAppDispatch} from './hooks';
+import {changeAppThemeAC} from './app-reducer';
+import {useAppDispatch, useAppSelector} from './hooks';
 import {TodolistsList} from '../features/TodolistsList/TodolistsList';
 import {
     AppBar,
@@ -12,21 +10,23 @@ import {
     createTheme,
     CssBaseline,
     IconButton,
+    LinearProgress,
     ThemeProvider,
     Toolbar,
     Typography
 } from '@mui/material';
 import {Brightness4, BrightnessHigh, Menu} from '@mui/icons-material';
+import {ErrorSnackbars} from '../components/ErrorSnackbar/ErrorSnackbar';
 
 
 function App() {
 
     //color theme logic
     const dispatch = useAppDispatch()
-    const colorTheme = useSelector<AppRootStateType, ColorThemeType>(state => state.colorThemes.colorTheme)
+    const appState = useAppSelector(state => state.app)
     const theme = createTheme({
         palette: {
-            mode: colorTheme,
+            mode: appState.colorTheme,
             primary: {
                 main: '#27a1c6',
             },
@@ -35,10 +35,11 @@ function App() {
             },
         }
     })
-    const toggleColorTheme = () => dispatch(changeThemeAC(colorTheme))
+    const toggleColorTheme = () => dispatch(changeAppThemeAC(appState.colorTheme))
 
     return (
         <div>
+            <ErrorSnackbars/>
             <ThemeProvider theme={theme}>
                 <CssBaseline/>
                 <AppBar position="static">
@@ -51,11 +52,12 @@ function App() {
                         </Typography>
                         <div>
                             <IconButton onClick={toggleColorTheme}>
-                                {colorTheme === 'dark' ? <BrightnessHigh/> : <Brightness4/>}
+                                {appState.colorTheme === 'dark' ? <BrightnessHigh/> : <Brightness4/>}
                             </IconButton>
                             <Button color="inherit" variant={'outlined'}>Login</Button>
                         </div>
                     </Toolbar>
+                    {appState.status === 'loading' && <LinearProgress/>}
                 </AppBar>
                 <Container fixed>
                     <TodolistsList/>
