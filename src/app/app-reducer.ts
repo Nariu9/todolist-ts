@@ -1,14 +1,10 @@
-export type ColorThemeType = 'dark' | 'light'
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-
 const initialState = {
     colorTheme: 'dark' as ColorThemeType,
     status: 'idle' as RequestStatusType,
     error: null as null | string
 }
-type initialStateType = typeof initialState
 
-export const appReducer = (state: initialStateType = initialState, action: AppActionsType | ThemeActionType): initialStateType => {
+export const appReducer = (state: AppInitialStateType = initialState, action: AppActionsType): AppInitialStateType => {
     switch (action.type) {
         case 'APP/CHANGE-COLOR-THEME':
             return {...state, colorTheme: action.colorTheme === 'light' ? 'dark' : 'light'}
@@ -21,9 +17,16 @@ export const appReducer = (state: initialStateType = initialState, action: AppAc
     }
 }
 
+// actions
 export const changeAppThemeAC = (colorTheme: ColorThemeType) => ({type: 'APP/CHANGE-COLOR-THEME', colorTheme}) as const
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status}) as const
 export const setAppErrorAC = (error: null | string) => ({type: 'APP/SET-ERROR', error}) as const
 
-export type ThemeActionType = ReturnType<typeof changeAppThemeAC>
-export type AppActionsType = ReturnType<typeof setAppStatusAC> | ReturnType<typeof setAppErrorAC>
+
+// types
+export type ColorThemeType = 'dark' | 'light'
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+export type AppInitialStateType = typeof initialState
+export type AppActionsType = ReturnType<typeof changeAppThemeAC>
+    | ReturnType<typeof setAppStatusAC>
+    | ReturnType<typeof setAppErrorAC>
