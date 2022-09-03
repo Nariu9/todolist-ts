@@ -42,7 +42,7 @@ export const setTodolistsAC = (todolists: TodolistType[]) => ({
     type: 'SET-TODOLISTS',
     todolists
 }) as const
-export const changeEntityStatusAC = (todolistId: string, entityStatus: RequestStatusType) => ({
+export const changeTodolistEntityStatusAC = (todolistId: string, entityStatus: RequestStatusType) => ({
     type: 'CHANGE-TODOLIST-ENTITY-STATUS',
     todolistId,
     entityStatus
@@ -63,7 +63,7 @@ export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
 }
 export const removeTodolistTC = (todolistId: string): AppThunk => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    dispatch(changeEntityStatusAC(todolistId, 'loading'))
+    dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
     todolistsApi.deleteTodolist(todolistId)
         .then((res) => {
             if (res.data.resultCode === ResultCodes.successfully) {
@@ -94,13 +94,16 @@ export const addTodolistTC = (title: string): AppThunk => (dispatch) => {
 }
 export const changeTodolistTitleTC = (todolistId: string, title: string): AppThunk => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
+    dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
     todolistsApi.updateTodolist({todolistId, title})
         .then((res) => {
             if (res.data.resultCode === ResultCodes.successfully) {
                 dispatch(changeTodolistTitleAC(todolistId, title))
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(changeTodolistEntityStatusAC(todolistId, 'idle'))
             } else {
                 handleServerAppError(res.data, dispatch)
+                dispatch(changeTodolistEntityStatusAC(todolistId, 'failed'))
             }
         })
         .catch((e) => {
@@ -124,4 +127,4 @@ export type TodolistsActionsType = RemoveTodolistActionType
     | ReturnType<typeof changeTodolistTitleAC>
     | ReturnType<typeof changeFilterAC>
     | SetTodolistsActionType
-    | ReturnType<typeof changeEntityStatusAC>
+    | ReturnType<typeof changeTodolistEntityStatusAC>

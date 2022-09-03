@@ -18,7 +18,6 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
     const offEditMode = () => {
         setEditMode(false)
         text.trim() !== '' && props.onChange(text)
-        setText('')
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
