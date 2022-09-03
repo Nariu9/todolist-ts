@@ -1,34 +1,35 @@
-import React, {memo, useCallback, useEffect} from 'react';
+import React, {FC, memo, useCallback, useEffect} from 'react';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
-import {useSelector} from 'react-redux';
-import {AppRootStateType} from '../../../app/store';
 import {addTasksTC, fetchTasksTC} from '../tasks-reducer';
-import {changeFilterAC, changeTodolistTitleTC, FilterType, removeTodolistTC} from '../todolists-reducer';
+import {
+    changeFilterAC,
+    changeTodolistTitleTC,
+    FilterType,
+    removeTodolistTC,
+    TodolistDomainType
+} from '../todolists-reducer';
 import {Task} from './Task/Task';
-import {TaskStatuses, TaskType} from '../../../api/todolists-api';
-import {useAppDispatch} from '../../../app/hooks';
+import {TaskStatuses} from '../../../api/todolists-api';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import {Button, IconButton, List} from '@mui/material';
 import {Delete} from '@mui/icons-material';
-import {RequestStatusType} from '../../../app/app-reducer';
 
-type TodolistUpgradedPropsType = {
-    title: string
-    filter: FilterType
-    todolistId: string
-    entityStatus: RequestStatusType
+type TodolistPropsType = {
+    todolist: TodolistDomainType
+    demo?: boolean
 }
 
 
-export const Todolist: React.FC<TodolistUpgradedPropsType> = memo(({title, filter, todolistId, entityStatus}) => {
+export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) => {
     console.log('Todolist called')
 
-    let tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todolistId])
+    let tasks = useAppSelector(state => state.tasks[todolist.id])
     const dispatch = useAppDispatch()
 
-    const isDisabled = entityStatus === 'loading'
+    const isDisabled = todolist.entityStatus === 'loading'
 
-    switch (filter) {
+    switch (todolist.filter) {
         case 'active':
             tasks = tasks.filter(t => t.status === TaskStatuses.New)
             break;
@@ -38,35 +39,38 @@ export const Todolist: React.FC<TodolistUpgradedPropsType> = memo(({title, filte
     }
 
     const filterTasksHandler = useCallback((value: FilterType) => {
-        return () => dispatch(changeFilterAC(todolistId, value))
-    }, [dispatch, todolistId])
+        return () => dispatch(changeFilterAC(todolist.id, value))
+    }, [dispatch, todolist.id])
 
     const removeTodolistHandler = () => {
-        dispatch(removeTodolistTC(todolistId))
+        dispatch(removeTodolistTC(todolist.id))
     }
 
     const addTaskHandler = useCallback((taskTitle: string) => {
-        dispatch(addTasksTC(todolistId, taskTitle))
-    }, [dispatch, todolistId])
+        dispatch(addTasksTC(todolist.id, taskTitle))
+    }, [dispatch, todolist.id])
 
 
     const editTodolistTitleHandler = useCallback((newTitle: string) => {
-        dispatch(changeTodolistTitleTC(todolistId, newTitle))
-    }, [dispatch, todolistId])
+        dispatch(changeTodolistTitleTC(todolist.id, newTitle))
+    }, [dispatch, todolist.id])
 
     const tasksToRender = tasks && tasks.length
-        ? tasks.map(task => <Task key={task.id} task={task} todolistId={todolistId}
+        ? tasks.map(task => <Task key={task.id} task={task} todolistId={todolist.id}
                                   disabled={isDisabled}/>)
         : <span>No tasks in this list</span>
 
     useEffect(() => {
-        dispatch(fetchTasksTC(todolistId))
-    }, [dispatch, todolistId])
+        if (demo) {
+            return;
+        }
+        dispatch(fetchTasksTC(todolist.id))
+    }, [dispatch, todolist.id, demo])
 
     return (
         <div>
             <h3>
-                <EditableSpan value={title} onChange={editTodolistTitleHandler} disabled={isDisabled}/>
+                <EditableSpan value={todolist.title} onChange={editTodolistTitleHandler} disabled={isDisabled}/>
                 <IconButton onClick={removeTodolistHandler} color={'secondary'} disabled={isDisabled}>
                     <Delete/>
                 </IconButton>
@@ -76,12 +80,13 @@ export const Todolist: React.FC<TodolistUpgradedPropsType> = memo(({title, filte
                 {tasksToRender}
             </List>
             <div>
-                <Button size={'small'} variant={'contained'} color={filter === 'all' ? 'secondary' : 'primary'}
+                <Button size={'small'} variant={'contained'} color={todolist.filter === 'all' ? 'secondary' : 'primary'}
                         onClick={filterTasksHandler('all')}>All</Button>
-                <Button size={'small'} variant={'contained'} color={filter === 'active' ? 'secondary' : 'primary'}
+                <Button size={'small'} variant={'contained'}
+                        color={todolist.filter === 'active' ? 'secondary' : 'primary'}
                         onClick={filterTasksHandler('active')}>Active</Button>
                 <Button size={'small'} variant={'contained'}
-                        color={filter === 'completed' ? 'secondary' : 'primary'}
+                        color={todolist.filter === 'completed' ? 'secondary' : 'primary'}
                         onClick={filterTasksHandler('completed')}>Completed</Button>
             </div>
         </div>

@@ -18,8 +18,11 @@ import {
 import {Brightness4, BrightnessHigh, Menu} from '@mui/icons-material';
 import {ErrorSnackbars} from '../components/ErrorSnackbar/ErrorSnackbar';
 
+type AppPropsType = {
+    demo?: boolean
+}
 
-function App() {
+function App({demo = false}:AppPropsType) {
 
     //color theme logic
     const dispatch = useAppDispatch()
@@ -60,7 +63,7 @@ function App() {
                     {appState.status === 'loading' && <LinearProgress/>}
                 </AppBar>
                 <Container fixed>
-                    <TodolistsList/>
+                    <TodolistsList demo={demo}/>
                 </Container>
             </ThemeProvider>
         </div>
