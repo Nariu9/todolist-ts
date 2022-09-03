@@ -12,7 +12,10 @@ export default {
 } as ComponentMeta<typeof App>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof App> = () => <App/>;
+const Template: ComponentStory<typeof App> = (args) => <App {...args}/>;
 
 export const AppStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
+AppStory.args = {
+  demo: true
+}

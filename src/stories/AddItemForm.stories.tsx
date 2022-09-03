@@ -62,8 +62,9 @@ const Template2: ComponentStory<typeof AddItemForm> = (args) => {
                    onChange={onChangeHandler}
                    onKeyDown={onKeyDownHandler}
                    error={!!error}
-                   helperText={error}/>
-        <IconButton onClick={addTaskHandler} color={'primary'}>
+                   helperText={error}
+                    disabled={args.disabled}/>
+        <IconButton onClick={addTaskHandler} color={'primary'} disabled={args.disabled}>
           <AddBox/>
         </IconButton>
       </div>

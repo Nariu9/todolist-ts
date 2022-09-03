@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
 })
 
 const initialState: AppRootStateType = {
-    tasks: {/*
+    tasks: {
         ['todolistID_1']: [
             {
                 id: v1(),
@@ -27,7 +27,8 @@ const initialState: AppRootStateType = {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: v1(),
@@ -39,7 +40,8 @@ const initialState: AppRootStateType = {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: v1(),
@@ -51,7 +53,8 @@ const initialState: AppRootStateType = {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: v1(),
@@ -63,7 +66,8 @@ const initialState: AppRootStateType = {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             }
         ],
         ['todolistID_2']: [
@@ -77,7 +81,8 @@ const initialState: AppRootStateType = {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: v1(),
@@ -89,7 +94,8 @@ const initialState: AppRootStateType = {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: v1(),
@@ -101,7 +107,8 @@ const initialState: AppRootStateType = {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: v1(),
@@ -113,13 +120,14 @@ const initialState: AppRootStateType = {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             }
-        ]*/
+        ]
     },
     todolists: [
-        /*{id: 'todolistID_1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: 'todolistID_2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}*/
+        {id: 'todolistID_1', title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'},
+        {id: 'todolistID_2', title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: 'loading'}
     ],
     app: {
         colorTheme: 'light',

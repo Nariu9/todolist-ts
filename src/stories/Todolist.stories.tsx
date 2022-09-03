@@ -17,8 +17,13 @@ const Template: ComponentStory<typeof Todolist> = (args) => <Todolist {...args}/
 export const TodolistStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TodolistStory.args = {
-    title: 'What to learn',
-    filter: 'all',
-    todolistId: '639c8647-0b62-407e-affb-133e7437089b'
+    todolist: {
+        id: 'todolistID_1',
+        title: 'What to learn',
+        filter: 'all',
+        addedDate: '',
+        order: 0,
+        entityStatus: 'idle'
+    },
+    demo: true
 }
-
