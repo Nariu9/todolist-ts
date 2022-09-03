@@ -1,7 +1,8 @@
 {
-  "name": "it-incubator-todolist-ts",
+  "name": "todolist-ts",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Nariu9.github.io/todolist-ts",
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -34,7 +35,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -75,6 +78,7 @@
     "@storybook/node-logger": "^6.5.10",
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.5.10",
-    "@storybook/testing-library": "^0.0.13"
+    "@storybook/testing-library": "^0.0.13",
+    "gh-pages": "^4.0.0"
   }
 }
