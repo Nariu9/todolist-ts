@@ -4,7 +4,7 @@ import {ResponseType} from '../api/todolists-api';
 
 export const handleServerNetworkError = (error: { message: string }, dispatch: AppDispatch) => {
     dispatch(setAppStatusAC('failed'))
-    dispatch(setAppErrorAC(error.message))
+    dispatch(setAppErrorAC(error.message ? error.message : 'Some error occurred'))
 }
 
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: AppDispatch) => {
