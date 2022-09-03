@@ -1,10 +1,8 @@
 import {
-    addTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
+    addTaskAC, changeTaskEntityStatusAC,
     removeTaskAC,
     setTasksAC,
-    tasksReducer, TasksStateType
+    tasksReducer, TasksStateType, updateTaskAC
 } from './tasks-reducer';
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reducer';
 import {TaskPriorities, TaskStatuses} from '../../api/todolists-api';
@@ -21,7 +19,8 @@ beforeEach(() => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: '2', title: 'JS', description: '',
@@ -31,7 +30,8 @@ beforeEach(() => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: '3', title: 'React', description: '',
@@ -41,7 +41,8 @@ beforeEach(() => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             }
         ],
         'todolistId2': [
@@ -53,7 +54,8 @@ beforeEach(() => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: '2', title: 'milk', description: '',
@@ -63,7 +65,8 @@ beforeEach(() => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: '3', title: 'tea', description: '',
@@ -73,7 +76,8 @@ beforeEach(() => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             }
         ]
     };
@@ -94,7 +98,8 @@ test('correct task should be deleted from correct array', () => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: '2', title: 'JS', description: '',
@@ -104,7 +109,8 @@ test('correct task should be deleted from correct array', () => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: '3', title: 'React', description: '',
@@ -114,7 +120,8 @@ test('correct task should be deleted from correct array', () => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             }
         ],
         'todolistId2': [
@@ -126,7 +133,8 @@ test('correct task should be deleted from correct array', () => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {
                 id: '3', title: 'tea', description: '',
@@ -136,7 +144,8 @@ test('correct task should be deleted from correct array', () => {
                 priority: TaskPriorities.Low,
                 startDate: '',
                 deadline: '',
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             }
         ]
     });
@@ -168,16 +177,40 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-    const action = changeTaskStatusAC('todolistId2', '2', TaskStatuses.New);
+
+    const task = {
+        id: '2', title: 'JS', description: '',
+        todoListId: 'todolistId1',
+        status: TaskStatuses.New,
+        order: 0,
+        priority: TaskPriorities.Low,
+        startDate: '',
+        deadline: '',
+        addedDate: '',
+        entityStatus: 'idle'
+    }
+    const action = updateTaskAC('todolistId1', '2', task);
 
     const endState = tasksReducer(startState, action)
 
-    expect(endState['todolistId1'][1].status).toBe(TaskStatuses.Completed);
-    expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New);
+    expect(endState['todolistId1'][1].status).toBe(TaskStatuses.New);
+    expect(endState['todolistId2'][1].status).toBe(TaskStatuses.Completed);
 });
 
 test('title of specified task should be changed', () => {
-    const action = changeTaskTitleAC('todolistId2', '3', 'coffee');
+
+    const task = {
+        id: '3', title: 'coffee', description: '',
+        todoListId: 'todolistId2',
+        status: TaskStatuses.Completed,
+        order: 0,
+        priority: TaskPriorities.Low,
+        startDate: '',
+        deadline: '',
+        addedDate: '',
+        entityStatus: 'idle'
+    }
+    const action = updateTaskAC('todolistId2', '3', task);
 
     const endState = tasksReducer(startState, action)
 
@@ -242,3 +275,13 @@ test('tasks should be added', () => {
     expect(endState['todolistId1'].length).toBe(3)
     expect(endState['todolistId2'].length).toBe(0)
 })
+
+test('entity status of specified task should be changed', () => {
+    
+    const action = changeTaskEntityStatusAC('todolistId2', '3', 'succeeded');
+
+    const endState = tasksReducer(startState, action)
+
+    expect(endState['todolistId1'][2].entityStatus).toBe('idle');
+    expect(endState['todolistId2'][2].entityStatus).toBe('succeeded');
+});
