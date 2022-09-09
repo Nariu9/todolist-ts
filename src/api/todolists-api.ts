@@ -10,7 +10,19 @@ const instance = axios.create({
 })
 
 // API
-export const todolistsApi = {
+export const authAPI = {
+    login(data: LoginParamsType) {
+        return instance.post<'', AxiosResponse<ResponseType<{ id: number }>>, LoginParamsType>('/auth/login', data)
+    },
+    me() {
+        return instance.get<'', AxiosResponse<ResponseType<{ id: number, email: string, login: string }>>, {}>('auth/me')
+    },
+    logout() {
+        return instance.delete<'', AxiosResponse<ResponseType>, {}>('/auth/login')
+    }
+}
+
+export const todolistsAPI = {
     getTodolists() {
         return instance.get<'', AxiosResponse<TodolistType[]>, {}>('todo-lists')
     },
@@ -33,11 +45,17 @@ export const todolistsApi = {
         return instance.delete<'', AxiosResponse<ResponseType>, {}>(`todo-lists/${p.todolistId}/tasks/${p.taskId}`)
     },
     updateTask(p: { todolistId: string, taskId: string }, data: UpdateTaskModelType) {
-        return instance.put<'', AxiosResponse<ResponseType<{ item: TaskType }>>, UpdateTaskModelType>(`todo-lists/${p.todolistId}/tasks/${p.taskId}`, {...data})
+        return instance.put<'', AxiosResponse<ResponseType<{ item: TaskType }>>, UpdateTaskModelType>(`todo-lists/${p.todolistId}/tasks/${p.taskId}`, data)
     }
 }
 
 // types
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    captcha?: boolean
+}
 export type TodolistType = {
     id: string
     title: string
