@@ -1,7 +1,7 @@
-import React, {FC, memo, useCallback, useEffect} from 'react';
+import React, {FC, memo, useCallback, /*useEffect*/} from 'react';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
-import {addTasksTC, fetchTasksTC} from '../tasks-reducer';
+import {addTasksTC, /*fetchTasksTC*/} from '../tasks-reducer';
 import {
     changeFilterAC,
     changeTodolistTitleTC,
@@ -60,12 +60,12 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) =
                                   disabled={isDisabled}/>)
         : <span>No tasks in this list</span>
 
-    useEffect(() => {
+   /* useEffect(() => {
         if (demo) {
             return;
         }
         dispatch(fetchTasksTC(todolist.id))
-    }, [dispatch, todolist.id, demo])
+    }, [dispatch, todolist.id, demo])*/
 
     return (
         <div>
