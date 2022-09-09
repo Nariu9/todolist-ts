@@ -4,6 +4,7 @@ import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {Todolist} from './Todolist/Todolist';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Grid, Paper} from '@mui/material';
+import {Navigate} from 'react-router-dom';
 
 type TodolistsListPropsType = {
     demo?: boolean
@@ -12,14 +13,15 @@ type TodolistsListPropsType = {
 export const TodolistsList: FC<TodolistsListPropsType> = ({demo = false}) => {
 
     const todolists = useAppSelector(state => state.todolists)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (demo) {
+        if (demo || !isLoggedIn) {
             return
         }
         dispatch(fetchTodolistsTC())
-    }, [dispatch, demo])
+    }, [dispatch, demo, isLoggedIn])
 
     const addTodolist = useCallback((todolistTitle: string) => {
         dispatch(addTodolistTC(todolistTitle))
@@ -36,6 +38,10 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo = false}) => {
             </Grid>
         )
     })
+
+    if (!isLoggedIn) {
+        return <Navigate to={'/login'}/>
+    }
 
     return <>
         <Grid container style={{padding: '20px 0 20px 20px'}}>
