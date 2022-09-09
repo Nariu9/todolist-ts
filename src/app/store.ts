@@ -3,6 +3,7 @@ import {TasksActionsType, tasksReducer} from '../features/TodolistsList/tasks-re
 import {TodolistsActionsType, todolistsReducer} from '../features/TodolistsList/todolists-reducer';
 import {AppActionsType, appReducer} from './app-reducer';
 import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import {authReducer} from '../features/Login/auth-reducer';
 
 declare global {
     interface Window {
@@ -13,7 +14,8 @@ declare global {
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
