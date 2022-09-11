@@ -6,7 +6,8 @@ beforeEach(() => {
     startState = {
         colorTheme: 'light',
         status: 'idle',
-        error: null
+        error: null,
+        isInitialized: false
     }
 })
 
