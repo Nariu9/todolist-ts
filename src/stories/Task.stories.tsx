@@ -3,7 +3,7 @@ import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {Task} from '../features/TodolistsList/Todolist/Task/Task';
 import {ReduxStoreProviderDecorator} from './decorators/ReduxStoreProviderDecorator';
 import {useSelector} from 'react-redux';
-import {AppRootStateType} from '../app/store';
+import {RootState} from '../app/store';
 import {TaskPriorities, TaskStatuses} from '../api/todolists-api';
 import {TaskDomainType} from '../features/TodolistsList/tasks-reducer';
 
@@ -54,7 +54,7 @@ TaskIsNotDoneStory.args = {
 }
 
 const TaskWithRedux = () => {
-    const task = useSelector<AppRootStateType, TaskDomainType>(state => state.tasks['todolistID_1'][0])
+    const task = useSelector<RootState, TaskDomainType>(state => state.tasks['todolistID_1'][0])
     return <Task task={task} todolistId={'todolistID_1'} disabled={false}/>
 }
 const Template1: ComponentStory<typeof TaskWithRedux> = () => {

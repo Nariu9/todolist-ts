@@ -1,5 +1,5 @@
 import {Provider} from 'react-redux';
-import {AppRootStateType} from '../../app/store';
+import {RootState} from '../../app/store';
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import {tasksReducer} from '../../features/TodolistsList/tasks-reducer';
 import {todolistsReducer} from '../../features/TodolistsList/todolists-reducer';
@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
     app: appReducer
 })
 
-const initialState: AppRootStateType = {
+const initialState: RootState = {
     tasks: {
         ['todolistID_1']: [
             {
