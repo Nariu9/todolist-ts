@@ -2,6 +2,7 @@ import {AppThunk} from './store';
 import {authAPI, ResultCodes} from '../api/todolists-api';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 import {setLoggedInAC} from '../features/Login/auth-reducer';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 const initialState = {
     colorTheme: 'dark' as ColorThemeType,
@@ -10,33 +11,34 @@ const initialState = {
     isInitialized: false
 }
 
-export const appReducer = (state: AppInitialStateType = initialState, action: AppActionsType): AppInitialStateType => {
-    switch (action.type) {
-        case 'APP/CHANGE-COLOR-THEME':
-            return {...state, colorTheme: action.colorTheme === 'light' ? 'dark' : 'light'}
-        case 'APP/SET-STATUS':
-            return {...state, status: action.status}
-        case 'APP/SET-ERROR':
-            return {...state, error: action.error}
-        case 'APP/SET-INITIALIZED':
-            return {...state, isInitialized: action.value}
-        default :
-            return state
+const slice = createSlice({
+    name: 'app',
+    initialState,
+    reducers: {
+        changeAppThemeAC(state, action: PayloadAction<{ colorTheme: ColorThemeType }>) {
+            state.colorTheme = action.payload.colorTheme === 'light' ? 'dark' : 'light'
+        },
+        setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
+            state.status = action.payload.status
+        },
+        setAppErrorAC(state, action: PayloadAction<{ error: null | string }>) {
+            state.error = action.payload.error
+        },
+        setAppInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
+            state.isInitialized = action.payload.isInitialized
+        }
     }
-}
+})
 
-// action creators
-export const changeAppThemeAC = (colorTheme: ColorThemeType) => ({type: 'APP/CHANGE-COLOR-THEME', colorTheme} as const)
-export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
-export const setAppErrorAC = (error: null | string) => ({type: 'APP/SET-ERROR', error} as const)
-export const setAppInitializedAC = (value: boolean) => ({type: 'APP/SET-INITIALIZED', value} as const)
+export const appReducer = slice.reducer
+export const {changeAppThemeAC, setAppStatusAC, setAppErrorAC, setAppInitializedAC} = slice.actions
 
 //thunk creators
 export const initializeAppTC = (): AppThunk => (dispatch) => {
     authAPI.me()
         .then((res) => {
             if (res.data.resultCode === ResultCodes.successfully) {
-                dispatch(setLoggedInAC(true))
+                dispatch(setLoggedInAC({value: true}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -45,15 +47,11 @@ export const initializeAppTC = (): AppThunk => (dispatch) => {
             handleServerNetworkError(e, dispatch)
         })
         .finally(() => {
-            dispatch(setAppInitializedAC(true))
+            dispatch(setAppInitializedAC({isInitialized: true}))
         })
 }
 
 // types
-export type ColorThemeType = 'dark' | 'light'
+type ColorThemeType = 'dark' | 'light'
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type AppInitialStateType = typeof initialState
-export type AppActionsType = ReturnType<typeof changeAppThemeAC>
-    | ReturnType<typeof setAppStatusAC>
-    | ReturnType<typeof setAppErrorAC>
-    | ReturnType<typeof setAppInitializedAC>
