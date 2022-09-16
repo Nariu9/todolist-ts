@@ -47,7 +47,7 @@ function App({demo = false}: AppPropsType) {
             },
         }
     })
-    const toggleColorTheme = () => dispatch(changeAppThemeAC(appState.colorTheme))
+    const toggleColorTheme = () => dispatch(changeAppThemeAC({colorTheme: appState.colorTheme}))
 
 
     if (!isInitialized) {
