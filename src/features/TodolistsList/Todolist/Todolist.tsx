@@ -39,7 +39,7 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) =
     }
 
     const filterTasksHandler = useCallback((value: FilterType) => {
-        return () => dispatch(changeFilterAC(todolist.id, value))
+        return () => dispatch(changeFilterAC({todolistId: todolist.id, filter: value}))
     }, [dispatch, todolist.id])
 
     const removeTodolistHandler = () => {
@@ -60,12 +60,12 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) =
                                   disabled={isDisabled}/>)
         : <span>No tasks in this list</span>
 
-   /* useEffect(() => {
-        if (demo) {
-            return;
-        }
-        dispatch(fetchTasksTC(todolist.id))
-    }, [dispatch, todolist.id, demo])*/
+    /* useEffect(() => {
+         if (demo) {
+             return;
+         }
+         dispatch(fetchTasksTC(todolist.id))
+     }, [dispatch, todolist.id, demo])*/
 
     return (
         <div>
