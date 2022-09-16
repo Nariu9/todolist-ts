@@ -20,7 +20,7 @@ beforeEach(() => {
 
 test('color theme should be changed', () => {
 
-    const action = changeAppThemeAC('light')
+    const action = changeAppThemeAC({colorTheme: 'light'})
 
     const endState = appReducer(startState, action)
 
@@ -28,19 +28,19 @@ test('color theme should be changed', () => {
 });
 
 test('correct status should be set', () => {
-    const endState = appReducer(startState, setAppStatusAC('succeeded'))
+    const endState = appReducer(startState, setAppStatusAC({status: 'succeeded'}))
 
     expect(endState.status).toBe('succeeded');
 });
 
 test('correct error should be set', () => {
-    const endState = appReducer(startState, setAppErrorAC('some error'))
+    const endState = appReducer(startState, setAppErrorAC({error: 'some error'}))
 
     expect(endState.error).toBe('some error');
 });
 
 test('isInitialized property should be changed', () => {
-    const endState = appReducer(startState, setAppInitializedAC(true))
+    const endState = appReducer(startState, setAppInitializedAC({isInitialized: true}))
 
     expect(endState.isInitialized).toBe(true);
 });
