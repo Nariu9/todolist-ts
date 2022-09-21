@@ -165,7 +165,7 @@ test('correct task should be added to correct array', () => {
         addedDate: ''
     }
 
-    const action = addTaskAC({task});
+    const action = addTaskAC(task);
 
     const endState = tasksReducer(startState, action)
 
