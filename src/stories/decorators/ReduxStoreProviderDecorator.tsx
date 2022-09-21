@@ -1,5 +1,5 @@
 import {Provider} from 'react-redux';
-import {RootState} from '../../app/store';
+import {RootReducerType, RootState} from '../../app/store';
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import {tasksReducer} from '../../features/TodolistsList/tasks-reducer';
 import {todolistsReducer} from '../../features/TodolistsList/todolists-reducer';
@@ -7,11 +7,14 @@ import {appReducer} from '../../app/app-reducer';
 import {v1} from 'uuid';
 import {TaskPriorities, TaskStatuses} from '../../api/todolists-api';
 import thunk from 'redux-thunk';
+import {authReducer} from '../../features/Login/auth-reducer';
+import {HashRouter} from 'react-router-dom';
 
-const rootReducer = combineReducers({
+const rootReducer: RootReducerType = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer
 })
 
 const initialState: RootState = {
@@ -150,3 +153,7 @@ export const ReduxStoreProviderDecorator = (storyFn: () => JSX.Element) => {
 export const ReduxStoreProviderDecorator = (StoryFn: React.ElementType) => {
     return <Provider store={store}><StoryFn/></Provider>
 }*/
+
+export const HashRouterDecorator = (storyFn: () => JSX.Element) => {
+    return <HashRouter>{storyFn()}</HashRouter>
+}
