@@ -1,6 +1,6 @@
 import {AppThunk} from './store';
 import {authAPI, ResultCodes} from '../api/todolists-api';
-import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
+import {handleServerNetworkError} from '../utils/error-utils';
 import {setLoggedInAC} from '../features/Login/auth-reducer';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
@@ -40,7 +40,8 @@ export const initializeAppTC = (): AppThunk => (dispatch) => {
             if (res.data.resultCode === ResultCodes.successfully) {
                 dispatch(setLoggedInAC({value: true}))
             } else {
-                handleServerAppError(res.data, dispatch)
+                // ignore auth me server error
+                // handleServerAppError(res.data, dispatch)
             }
         })
         .catch((e) => {
