@@ -1,7 +1,7 @@
 import React, {FC, memo, useCallback, /*useEffect*/} from 'react';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
-import {addTasksTC, /*fetchTasksTC*/} from '../tasks-reducer';
+import {addTaskTC, /*fetchTasksTC*/} from '../tasks-reducer';
 import {
     changeFilterAC,
     changeTodolistTitleTC,
@@ -47,7 +47,7 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) =
     }
 
     const addTaskHandler = useCallback((taskTitle: string) => {
-        dispatch(addTasksTC(todolist.id, taskTitle))
+        dispatch(addTaskTC({todolistId: todolist.id, taskTitle}))
     }, [dispatch, todolist.id])
 
 
