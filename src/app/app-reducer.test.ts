@@ -2,8 +2,8 @@ import {
     AppInitialStateType,
     appReducer,
     changeAppThemeAC,
+    initializeAppTC,
     setAppErrorAC,
-    setAppInitializedAC,
     setAppStatusAC
 } from './app-reducer';
 
@@ -40,7 +40,7 @@ test('correct error should be set', () => {
 });
 
 test('isInitialized property should be changed', () => {
-    const endState = appReducer(startState, setAppInitializedAC({isInitialized: true}))
+    const endState = appReducer(startState, initializeAppTC.fulfilled(undefined , 'requestId', undefined))
 
     expect(endState.isInitialized).toBe(true);
 });
