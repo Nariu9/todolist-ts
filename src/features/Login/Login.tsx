@@ -43,9 +43,17 @@ export const Login = () => {
             }
             return errors
         },
-        onSubmit: values => {
-            dispatch(loginTC(values))
-            formik.resetForm()
+        onSubmit: async (values, formikHelpers) => {
+            const action = await dispatch(loginTC(values))
+            if (loginTC.rejected.match(action)) {
+                if (action.payload?.fieldsErrors?.length) {
+                    const error = action.payload?.fieldsErrors[0]
+                    formikHelpers.setFieldError(error.field, error.error)
+                } else {
+
+                }
+            }
+            // formik.resetForm()
         },
     })
 
@@ -80,6 +88,7 @@ export const Login = () => {
                         <TextField type="password"
                                    label="Password"
                                    margin="normal"
+                                   autoComplete="on"
                                    {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password &&
