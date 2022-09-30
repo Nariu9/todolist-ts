@@ -1,19 +1,33 @@
-import {AppThunk} from './store';
 import {authAPI, ResultCodes} from '../api/todolists-api';
 import {handleServerNetworkError} from '../utils/error-utils';
 import {setLoggedInAC} from '../features/Login/auth-reducer';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {AxiosError} from 'axios';
 
-const initialState = {
-    colorTheme: 'dark' as ColorThemeType,
-    status: 'idle' as RequestStatusType,
-    error: null as null | string,
-    isInitialized: false
-}
+//thunk
+export const initializeAppTC = createAsyncThunk('app/initialize', async (arg, {dispatch}) => {
+    try {
+        const res = await authAPI.me()
+        if (res.data.resultCode === ResultCodes.successfully) {
+            dispatch(setLoggedInAC({value: true}))
+        } else {
+            // ignore auth me server error
+            // handleServerAppError(res.data, dispatch)
+        }
+    } catch (e) {
+        const error = e as AxiosError
+        handleServerNetworkError(error, dispatch)
+    }
+})
 
 const slice = createSlice({
     name: 'app',
-    initialState,
+    initialState: {
+        colorTheme: 'dark' as ColorThemeType,
+        status: 'idle' as RequestStatusType,
+        error: null as null | string,
+        isInitialized: false
+    },
     reducers: {
         changeAppThemeAC(state, action: PayloadAction<{ colorTheme: ColorThemeType }>) {
             state.colorTheme = action.payload.colorTheme === 'light' ? 'dark' : 'light'
@@ -23,36 +37,19 @@ const slice = createSlice({
         },
         setAppErrorAC(state, action: PayloadAction<{ error: null | string }>) {
             state.error = action.payload.error
-        },
-        setAppInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
-            state.isInitialized = action.payload.isInitialized
         }
+    },
+    extraReducers: builder => {
+        builder.addCase(initializeAppTC.fulfilled, (state) => {
+            state.isInitialized = true
+        })
     }
 })
 
 export const appReducer = slice.reducer
-export const {changeAppThemeAC, setAppStatusAC, setAppErrorAC, setAppInitializedAC} = slice.actions
-
-//thunk creators
-export const initializeAppTC = (): AppThunk => (dispatch) => {
-    authAPI.me()
-        .then((res) => {
-            if (res.data.resultCode === ResultCodes.successfully) {
-                dispatch(setLoggedInAC({value: true}))
-            } else {
-                // ignore auth me server error
-                // handleServerAppError(res.data, dispatch)
-            }
-        })
-        .catch((e) => {
-            handleServerNetworkError(e, dispatch)
-        })
-        .finally(() => {
-            dispatch(setAppInitializedAC({isInitialized: true}))
-        })
-}
+export const {changeAppThemeAC, setAppStatusAC, setAppErrorAC} = slice.actions
 
 // types
 type ColorThemeType = 'dark' | 'light'
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-export type AppInitialStateType = typeof initialState
+export type AppInitialStateType = ReturnType<typeof slice.getInitialState>
