@@ -1,5 +1,5 @@
 import {
-    addTaskAC,
+    addTaskTC,
     changeTaskEntityStatusAC,
     fetchTasksTC,
     removeTaskTC,
@@ -169,7 +169,7 @@ test('correct task should be added to correct array', () => {
         addedDate: ''
     }
 
-    const action = addTaskAC(task);
+    const action = addTaskTC.fulfilled(task, 'requestId', {...task, todolistId: 'todolistId2', taskTitle: 'juce'});
 
     const endState = tasksReducer(startState, action)
 
