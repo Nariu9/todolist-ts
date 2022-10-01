@@ -22,11 +22,11 @@ export const Task: React.FC<TaskPropsType> = memo(({task, todolistId, disabled})
 
     const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
-        dispatch(updateTasksTC(todolistId, task.id, {status}))
+        dispatch(updateTasksTC({todolistId, taskId: task.id, model: {status}}))
     }
 
     const editTaskTitleHandler = useCallback((taskTitle: string) => {
-        dispatch(updateTasksTC(todolistId, task.id, {title: taskTitle}))
+        dispatch(updateTasksTC({todolistId, taskId: task.id, model: {title: taskTitle}}))
     }, [dispatch, todolistId, task.id])
 
     return (
