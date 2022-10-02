@@ -2,7 +2,7 @@ import {
     addTodolistTC,
     changeFilterAC,
     changeTodolistEntityStatusAC,
-    changeTodolistTitleAC,
+    changeTodolistTitleTC,
     fetchTodolistsTC,
     FilterType,
     removeTodolistTC,
@@ -48,10 +48,11 @@ test('correct todolist should be added', () => {
 test('correct todolist should change its name', () => {
     let newTodolistTitle = 'New Todolist';
 
-    const endState = todolistsReducer(startState, changeTodolistTitleAC({
+    const param = {
         todolistId: todolistId2,
         title: newTodolistTitle
-    }));
+    };
+    const endState = todolistsReducer(startState, changeTodolistTitleTC.fulfilled(param, 'requiredId', param));
 
     expect(endState[0].title).toBe('What to learn');
     expect(endState[1].title).toBe(newTodolistTitle);
