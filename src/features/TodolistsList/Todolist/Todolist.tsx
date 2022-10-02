@@ -52,7 +52,7 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) =
 
 
     const editTodolistTitleHandler = useCallback((newTitle: string) => {
-        dispatch(changeTodolistTitleTC(todolist.id, newTitle))
+        dispatch(changeTodolistTitleTC({todolistId: todolist.id, title: newTitle}))
     }, [dispatch, todolist.id])
 
     const tasksToRender = tasks && tasks.length
