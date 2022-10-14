@@ -1,6 +1,6 @@
 import {AnyAction, combineReducers} from 'redux';
-import {tasksReducer} from '../features/TodolistsList/tasks-reducer';
-import {todolistsReducer} from '../features/TodolistsList/todolists-reducer';
+import {tasksReducer} from '../features/TodolistsList/Todolist/Task';
+import {todolistsReducer} from '../features/TodolistsList/Todolist';
 import {appReducer} from './app-reducer';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {authReducer} from '../features/Login/auth-reducer';
@@ -17,11 +17,11 @@ export const store = configureStore({
     reducer: rootReducer,
 })
 export type RootReducerType = typeof rootReducer
-export type RootState = ReturnType<typeof rootReducer>
+export type RootStateType = ReturnType<typeof rootReducer>
 
-export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>
+export type AppDispatch = ThunkDispatch<RootStateType, unknown, AnyAction>
 
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootStateType, unknown, AnyAction>
 
 // @ts-ignore
 window.store = store
