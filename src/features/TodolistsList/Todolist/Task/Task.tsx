@@ -1,33 +1,39 @@
-import React, {ChangeEvent, memo, useCallback} from 'react';
-import {removeTaskTC, TaskDomainType, updateTasksTC} from '../../tasks-reducer';
-import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
+import React, {ChangeEvent, FC, memo, useCallback} from 'react';
+import {TaskDomainType} from './tasks-reducer';
+import {EditableSpan} from '../../../../components/EditableSpan';
 import {TaskStatuses} from '../../../../api/todolists-api';
-import {useAppDispatch} from '../../../../app/hooks';
-import {Checkbox, IconButton, ListItem} from '@mui/material';
+import {useActions} from '../../../../app/hooks';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import ListItem from '@mui/material/ListItem';
 import {Delete} from '@mui/icons-material';
+import {tasksActions} from './index';
 
 type TaskPropsType = {
     task: TaskDomainType
     todolistId: string
     disabled: boolean
 }
-export const Task: React.FC<TaskPropsType> = memo(({task, todolistId, disabled}) => {
-    const dispatch = useAppDispatch()
+export const Task: FC<TaskPropsType> = memo(({task, todolistId, disabled}) => {
+    const {removeTask, updateTasks} = useActions(tasksActions)
 
     const isDisabled = task.entityStatus === 'loading'
 
-    const removeTasksHandler = () => {
-        dispatch(removeTaskTC({todolistId, taskId: task.id}))
-    }
+    const removeTasksHandler = useCallback(() => {
+        removeTask({todolistId, taskId: task.id})
+    }, [removeTask, todolistId, task.id])
 
-    const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
-        dispatch(updateTasksTC({todolistId, taskId: task.id, model: {status}}))
-    }
+    const onChangeCheckboxHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        updateTasks({
+            todolistId,
+            taskId: task.id,
+            model: {status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New}
+        })
+    }, [updateTasks, task.id, todolistId])
 
     const editTaskTitleHandler = useCallback((taskTitle: string) => {
-        dispatch(updateTasksTC({todolistId, taskId: task.id, model: {title: taskTitle}}))
-    }, [dispatch, todolistId, task.id])
+        updateTasks({todolistId, taskId: task.id, model: {title: taskTitle}})
+    }, [updateTasks, todolistId, task.id])
 
     return (
         <ListItem disableGutters divider className={task.status === TaskStatuses.Completed ? 'task isDone' : 'task'}>
