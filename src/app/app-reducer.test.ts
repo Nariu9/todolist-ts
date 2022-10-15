@@ -1,11 +1,11 @@
 import {
     AppInitialStateType,
-    appReducer,
-    changeAppThemeAC,
-    initializeAppTC,
-    setAppErrorAC,
-    setAppStatusAC
+    changeAppTheme,
+    initializeApp,
+    setAppError,
+    setAppStatus
 } from './app-reducer';
+import {appReducer} from './index';
 
 let startState: AppInitialStateType
 
@@ -20,7 +20,7 @@ beforeEach(() => {
 
 test('color theme should be changed', () => {
 
-    const action = changeAppThemeAC({colorTheme: 'light'})
+    const action = changeAppTheme({colorTheme: 'light'})
 
     const endState = appReducer(startState, action)
 
@@ -28,19 +28,19 @@ test('color theme should be changed', () => {
 });
 
 test('correct status should be set', () => {
-    const endState = appReducer(startState, setAppStatusAC({status: 'succeeded'}))
+    const endState = appReducer(startState, setAppStatus({status: 'succeeded'}))
 
     expect(endState.status).toBe('succeeded');
 });
 
 test('correct error should be set', () => {
-    const endState = appReducer(startState, setAppErrorAC({error: 'some error'}))
+    const endState = appReducer(startState, setAppError({error: 'some error'}))
 
     expect(endState.error).toBe('some error');
 });
 
 test('isInitialized property should be changed', () => {
-    const endState = appReducer(startState, initializeAppTC.fulfilled(undefined , 'requestId', undefined))
+    const endState = appReducer(startState, initializeApp.fulfilled(undefined , 'requestId', undefined))
 
     expect(endState.isInitialized).toBe(true);
 });
