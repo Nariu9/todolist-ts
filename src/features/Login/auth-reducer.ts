@@ -1,20 +1,24 @@
 import {authAPI, FieldsErrorsType, LoginParamsType, ResultCodes} from '../../api/todolists-api';
-import {setAppStatusAC} from '../../app/app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
-import {wipeTodolistsDataAC} from '../TodolistsList/todolists-reducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {AxiosError} from 'axios';
+import {todolistsActions} from '../TodolistsList/Todolist';
+import {appActions} from '../../app';
+import {setAppStatus} from '../../app/app-reducer';
+
+const {wipeTodolistsData} = todolistsActions
+// const {setAppStatus} = appActions
 
 // thunk
-export const loginTC = createAsyncThunk<undefined, LoginParamsType, {
+export const login = createAsyncThunk<undefined, LoginParamsType, {
     rejectValue: { errors: string[], fieldsErrors?: FieldsErrorsType[] }
 }>('auth/login', async (param, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
-    dispatch(setAppStatusAC({status: 'loading'}))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await authAPI.login(param)
         if (res.data.resultCode === ResultCodes.successfully) {
-            dispatch(setAppStatusAC({status: 'succeeded'}))
+            dispatch(setAppStatus({status: 'succeeded'}))
             return
         } else {
             handleServerAppError(res.data, dispatch)
@@ -27,14 +31,14 @@ export const loginTC = createAsyncThunk<undefined, LoginParamsType, {
     }
 })
 
-export const logoutTC = createAsyncThunk('auth/logout', async (arg, thunkAPI) => {
+export const logout = createAsyncThunk('auth/logout', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
-    dispatch(setAppStatusAC({status: 'loading'}))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await authAPI.logout()
         if (res.data.resultCode === ResultCodes.successfully) {
-            dispatch(wipeTodolistsDataAC())
-            dispatch(setAppStatusAC({status: 'succeeded'}))
+            dispatch(wipeTodolistsData())
+            dispatch(setAppStatus({status: 'succeeded'}))
             return
         } else {
             handleServerAppError(res.data, dispatch)
@@ -47,25 +51,26 @@ export const logoutTC = createAsyncThunk('auth/logout', async (arg, thunkAPI) =>
     }
 })
 
-const slice = createSlice({
+export const authAsyncActions = {login, logout}
+
+export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         isLoggedIn: false
     },
     reducers: {
-        setLoggedInAC(state, action: PayloadAction<{ value: boolean }>) {
+        setLoggedIn(state, action: PayloadAction<{ value: boolean }>) {
             state.isLoggedIn = action.payload.value
         }
     },
     extraReducers: builder => {
-        builder.addCase(loginTC.fulfilled, (state) => {
+        builder.addCase(login.fulfilled, (state) => {
             state.isLoggedIn = true
         })
-        builder.addCase(logoutTC.fulfilled, (state) => {
+        builder.addCase(logout.fulfilled, (state) => {
             state.isLoggedIn = false
         })
     }
 })
 
-export const authReducer = slice.reducer
-export const {setLoggedInAC} = slice.actions
+export const {setLoggedIn} = authSlice.actions
