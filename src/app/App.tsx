@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {changeAppThemeAC, initializeAppTC} from './app-reducer';
-import {useAppDispatch, useAppSelector} from './hooks';
-import {TodolistsList} from '../features/TodolistsList/TodolistsList';
+import {useActions, useAppDispatch, useAppSelector} from './hooks';
+import {TodolistsList} from '../features/TodolistsList';
 import {
     AppBar,
-    Button, CircularProgress,
+    Button,
+    CircularProgress,
     Container,
     createTheme,
     CssBaseline,
@@ -16,10 +16,13 @@ import {
     Typography
 } from '@mui/material';
 import {Brightness4, BrightnessHigh, Menu} from '@mui/icons-material';
-import {ErrorSnackbars} from '../components/ErrorSnackbar/ErrorSnackbar';
+import {ErrorSnackbars} from '../components/ErrorSnackbar';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {Login} from '../features/Login/Login';
-import {logoutTC} from '../features/Login/auth-reducer';
+import {Login} from '../features/Login';
+import {logout} from '../features/Login/auth-reducer';
+import {selectColorTheme, selectIsInitialized, selectStatus} from './appSelectors';
+import {selectIsLoggedIn} from '../features/Login/authSelectors';
+import {changeAppTheme, initializeApp} from './app-reducer';
 
 type AppPropsType = {
     demo?: boolean
@@ -27,20 +30,22 @@ type AppPropsType = {
 
 function App({demo = false}: AppPropsType) {
 
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const isInitialized = useAppSelector(selectIsInitialized)
+    const status = useAppSelector(selectStatus)
+    const colorTheme = useAppSelector(selectColorTheme)
     const dispatch = useAppDispatch()
-    const isInitialized = useAppSelector(state => state.app.isInitialized)
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
     useEffect(() => {
         if (!demo) {
-            dispatch(initializeAppTC())
+            dispatch(initializeApp())
         }
     }, [dispatch, demo])
 
     //color theme logic
-    const appState = useAppSelector(state => state.app)
     const theme = createTheme({
         palette: {
-            mode: appState.colorTheme,
+            mode: colorTheme,
             primary: {
                 main: '#27a1c6',
             },
@@ -49,7 +54,7 @@ function App({demo = false}: AppPropsType) {
             },
         }
     })
-    const toggleColorTheme = () => dispatch(changeAppThemeAC({colorTheme: appState.colorTheme}))
+    const toggleColorTheme = () => dispatch(changeAppTheme({colorTheme}))
 
 
     if (!isInitialized) {
@@ -60,7 +65,7 @@ function App({demo = false}: AppPropsType) {
         </div>
     }
     const logoutHandler = () => {
-        dispatch(logoutTC())
+        dispatch(logout())
     }
 
     return (
@@ -78,13 +83,13 @@ function App({demo = false}: AppPropsType) {
                         </Typography>
                         <div>
                             <IconButton onClick={toggleColorTheme}>
-                                {appState.colorTheme === 'dark' ? <BrightnessHigh/> : <Brightness4/>}
+                                {colorTheme === 'dark' ? <BrightnessHigh/> : <Brightness4/>}
                             </IconButton>
                             {isLoggedIn &&
                                 <Button color="inherit" variant={'outlined'} onClick={logoutHandler}>Log out</Button>}
                         </div>
                     </Toolbar>
-                    {appState.status === 'loading' && <LinearProgress/>}
+                    {status === 'loading' && <LinearProgress/>}
                 </AppBar>
                 <Container fixed>
                     <Routes>
