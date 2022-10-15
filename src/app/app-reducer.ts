@@ -1,15 +1,15 @@
 import {authAPI, ResultCodes} from '../api/todolists-api';
 import {handleServerNetworkError} from '../utils/error-utils';
-import {setLoggedInAC} from '../features/Login/auth-reducer';
+import {setLoggedIn} from '../features/Login/auth-reducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {AxiosError} from 'axios';
 
 //thunk
-export const initializeAppTC = createAsyncThunk('app/initialize', async (arg, {dispatch}) => {
+export const initializeApp = createAsyncThunk('app/initialize', async (arg, {dispatch}) => {
     try {
         const res = await authAPI.me()
         if (res.data.resultCode === ResultCodes.successfully) {
-            dispatch(setLoggedInAC({value: true}))
+            dispatch(setLoggedIn({value: true}))
         } else {
             // ignore auth me server error
             // handleServerAppError(res.data, dispatch)
@@ -20,7 +20,7 @@ export const initializeAppTC = createAsyncThunk('app/initialize', async (arg, {d
     }
 })
 
-const slice = createSlice({
+export const appSlice = createSlice({
     name: 'app',
     initialState: {
         colorTheme: 'dark' as ColorThemeType,
@@ -29,27 +29,26 @@ const slice = createSlice({
         isInitialized: false
     },
     reducers: {
-        changeAppThemeAC(state, action: PayloadAction<{ colorTheme: ColorThemeType }>) {
+        changeAppTheme(state, action: PayloadAction<{ colorTheme: ColorThemeType }>) {
             state.colorTheme = action.payload.colorTheme === 'light' ? 'dark' : 'light'
         },
-        setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
+        setAppStatus(state, action: PayloadAction<{ status: RequestStatusType }>) {
             state.status = action.payload.status
         },
-        setAppErrorAC(state, action: PayloadAction<{ error: null | string }>) {
+        setAppError(state, action: PayloadAction<{ error: null | string }>) {
             state.error = action.payload.error
         }
     },
     extraReducers: builder => {
-        builder.addCase(initializeAppTC.fulfilled, (state) => {
+        builder.addCase(initializeApp.fulfilled, (state) => {
             state.isInitialized = true
         })
     }
 })
 
-export const appReducer = slice.reducer
-export const {changeAppThemeAC, setAppStatusAC, setAppErrorAC} = slice.actions
+export const {changeAppTheme, setAppStatus, setAppError} = appSlice.actions
 
 // types
-type ColorThemeType = 'dark' | 'light'
+export type ColorThemeType = 'dark' | 'light'
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-export type AppInitialStateType = ReturnType<typeof slice.getInitialState>
+export type AppInitialStateType = ReturnType<typeof appSlice.getInitialState>
