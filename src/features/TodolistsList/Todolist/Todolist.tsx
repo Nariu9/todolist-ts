@@ -1,10 +1,8 @@
 import React, {FC, memo, useCallback,} from 'react';
-import {AddItemForm} from '../../../components/AddItemForm';
-import {EditableSpan} from '../../../components/EditableSpan';
 import {FilterType, TodolistDomainType} from './todolists-reducer';
-import {Task, tasksActions} from './Task';
+import {tasksActions} from './Task';
 import {TaskStatuses} from '../../../api/todolists-api';
-import {useActions, useAppSelector} from '../../../app/hooks';
+import {useActions, useAppSelector} from '../../../common/hooks/hooks';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -12,6 +10,9 @@ import Paper from '@mui/material/Paper';
 import {Delete} from '@mui/icons-material';
 import {selectTasks} from './Task/taskSelectors';
 import {todolistsActions} from './index';
+import {Task} from './Task/Task';
+import {AddItemForm} from '../../../common/components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../../../common/components/EditableSpan/EditableSpan';
 
 type TodolistPropsType = {
     todolist: TodolistDomainType

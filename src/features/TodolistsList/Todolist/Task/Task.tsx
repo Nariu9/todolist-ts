@@ -1,13 +1,13 @@
 import React, {ChangeEvent, FC, memo, useCallback} from 'react';
 import {TaskDomainType} from './tasks-reducer';
-import {EditableSpan} from '../../../../components/EditableSpan';
 import {TaskStatuses} from '../../../../api/todolists-api';
-import {useActions} from '../../../../app/hooks';
+import {useActions} from '../../../../common/hooks/hooks';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import {Delete} from '@mui/icons-material';
 import {tasksActions} from './index';
+import {EditableSpan} from '../../../../common/components/EditableSpan/EditableSpan';
 
 type TaskPropsType = {
     task: TaskDomainType

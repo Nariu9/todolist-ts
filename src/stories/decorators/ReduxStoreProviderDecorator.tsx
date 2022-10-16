@@ -1,5 +1,4 @@
 import {Provider} from 'react-redux';
-import {RootReducerType, RootStateType} from '../../app/store';
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import {v1} from 'uuid';
 import {TaskPriorities, TaskStatuses} from '../../api/todolists-api';
@@ -7,8 +6,9 @@ import thunk from 'redux-thunk';
 import {HashRouter} from 'react-router-dom';
 import {tasksReducer} from '../../features/TodolistsList/Todolist/Task';
 import {todolistsReducer} from '../../features/TodolistsList/Todolist';
-import {appReducer} from '../../app';
+import {appReducer} from '../../features/Application';
 import {authReducer} from '../../features/Login';
+import {RootReducerType, RootStateType} from '../../features/Application/AppTypes';
 
 const rootReducer: RootReducerType = combineReducers({
     tasks: tasksReducer,

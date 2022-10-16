@@ -1,12 +1,13 @@
 import React, {FC, useCallback, useEffect} from 'react';
-import {useActions, useAppSelector} from '../../app/hooks';
-import {Todolist, todolistsActions} from './Todolist';
-import {AddItemForm} from '../../components/AddItemForm';
+import {useActions, useAppSelector} from '../../common/hooks/hooks';
+import {todolistsActions} from './Todolist';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import {Navigate} from 'react-router-dom';
 import {selectIsLoggedIn} from '../Login/authSelectors';
 import {selectTodolists} from './Todolist/todolistSelectors';
+import {Todolist} from './Todolist/Todolist';
+import {AddItemForm} from '../../common/components/AddItemForm/AddItemForm';
 
 type TodolistsListPropsType = {
     demo?: boolean

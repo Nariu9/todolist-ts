@@ -1,5 +1,5 @@
-import {RootStateType} from './store';
-import {ColorThemeType, RequestStatusType} from './app-reducer';
+import {ColorThemeType, RequestStatusType} from './application-reducer';
+import {RootStateType} from './AppTypes';
 
 export const selectIsInitialized = (state: RootStateType): boolean => state.app.isInitialized
 export const selectStatus = (state: RootStateType): RequestStatusType => state.app.status
