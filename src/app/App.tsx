@@ -2,19 +2,16 @@ import React, {useEffect} from 'react';
 import './App.css';
 import {useActions, useAppDispatch, useAppSelector} from './hooks';
 import {TodolistsList} from '../features/TodolistsList';
-import {
-    AppBar,
-    Button,
-    CircularProgress,
-    Container,
-    createTheme,
-    CssBaseline,
-    IconButton,
-    LinearProgress,
-    ThemeProvider,
-    Toolbar,
-    Typography
-} from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import IconButton from '@mui/material/IconButton';
+import LinearProgress from '@mui/material/LinearProgress';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import {createTheme, ThemeProvider} from '@mui/material';
 import {Brightness4, BrightnessHigh, Menu} from '@mui/icons-material';
 import {ErrorSnackbars} from '../components/ErrorSnackbar';
 import {Navigate, Route, Routes} from 'react-router-dom';
@@ -60,7 +57,7 @@ function App({demo = false}: AppPropsType) {
     if (!isInitialized) {
         return <div
             style={{position: 'fixed', top: '50%', textAlign: 'center', width: '100%'}}>
-            <CircularProgress size={100}/>
+            <CircularProgress size={50}/>
 
         </div>
     }
@@ -89,7 +86,7 @@ function App({demo = false}: AppPropsType) {
                                 <Button color="inherit" variant={'outlined'} onClick={logoutHandler}>Log out</Button>}
                         </div>
                     </Toolbar>
-                    {status === 'loading' && <LinearProgress/>}
+                    {status === 'loading' && <LinearProgress sx={{top: '60px', left: '0', right: '0', position: 'absolute'}}/>}
                 </AppBar>
                 <Container fixed>
                     <Routes>
