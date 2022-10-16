@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {useActions, useAppDispatch, useAppSelector} from './hooks';
-import {TodolistsList} from '../features/TodolistsList';
+import {useActions, useAppSelector} from '../common/hooks/hooks';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -13,13 +12,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import {createTheme, ThemeProvider} from '@mui/material';
 import {Brightness4, BrightnessHigh, Menu} from '@mui/icons-material';
-import {ErrorSnackbars} from '../components/ErrorSnackbar';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {Login} from '../features/Login';
-import {logout} from '../features/Login/auth-reducer';
-import {selectColorTheme, selectIsInitialized, selectStatus} from './appSelectors';
+import {authActions} from '../features/Login';
+import {selectColorTheme, selectIsInitialized, selectStatus} from '../features/Application/applicationSelectors';
 import {selectIsLoggedIn} from '../features/Login/authSelectors';
-import {changeAppTheme, initializeApp} from './app-reducer';
+import {appActions} from '../features/CommonActions/AppActions';
+import {appAsyncActions} from '../features/Application';
+import {ErrorSnackbars} from '../common/components/ErrorSnackbar/ErrorSnackbar';
+import {TodolistsList} from '../features/TodolistsList/TodolistsList';
+import {Login} from '../features/Login/Login';
+
 
 type AppPropsType = {
     demo?: boolean
@@ -31,13 +33,16 @@ function App({demo = false}: AppPropsType) {
     const isInitialized = useAppSelector(selectIsInitialized)
     const status = useAppSelector(selectStatus)
     const colorTheme = useAppSelector(selectColorTheme)
-    const dispatch = useAppDispatch()
+
+    const {logout} = useActions(authActions)
+    const {changeAppTheme} = useActions(appActions)
+    const {initializeApp} = useActions(appAsyncActions)
 
     useEffect(() => {
         if (!demo) {
-            dispatch(initializeApp())
+            initializeApp()
         }
-    }, [dispatch, demo])
+    }, [initializeApp, demo])
 
     //color theme logic
     const theme = createTheme({
@@ -51,7 +56,7 @@ function App({demo = false}: AppPropsType) {
             },
         }
     })
-    const toggleColorTheme = () => dispatch(changeAppTheme({colorTheme}))
+    const toggleColorTheme = () => changeAppTheme({colorTheme})
 
 
     if (!isInitialized) {
@@ -62,7 +67,7 @@ function App({demo = false}: AppPropsType) {
         </div>
     }
     const logoutHandler = () => {
-        dispatch(logout())
+        logout()
     }
 
     return (
@@ -86,7 +91,8 @@ function App({demo = false}: AppPropsType) {
                                 <Button color="inherit" variant={'outlined'} onClick={logoutHandler}>Log out</Button>}
                         </div>
                     </Toolbar>
-                    {status === 'loading' && <LinearProgress sx={{top: '60px', left: '0', right: '0', position: 'absolute'}}/>}
+                    {status === 'loading' &&
+                        <LinearProgress sx={{top: '60px', left: '0', right: '0', position: 'absolute'}}/>}
                 </AppBar>
                 <Container fixed>
                     <Routes>
