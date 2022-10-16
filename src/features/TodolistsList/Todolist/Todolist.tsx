@@ -2,13 +2,15 @@ import React, {FC, memo, useCallback,} from 'react';
 import {AddItemForm} from '../../../components/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan';
 import {FilterType, TodolistDomainType} from './todolists-reducer';
-import {Task} from './Task';
+import {Task, tasksActions} from './Task';
 import {TaskStatuses} from '../../../api/todolists-api';
 import {useActions, useAppSelector} from '../../../app/hooks';
-import {Button, IconButton, List} from '@mui/material';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import Paper from '@mui/material/Paper';
 import {Delete} from '@mui/icons-material';
 import {selectTasks} from './Task/taskSelectors';
-import {tasksActions} from './Task';
 import {todolistsActions} from './index';
 
 type TodolistPropsType = {
@@ -55,7 +57,7 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) =
     const tasksToRender = tasks && tasks.length
         ? tasks.map(task => <Task key={task.id} task={task} todolistId={todolist.id}
                                   disabled={isDisabled}/>)
-        : <span>No tasks in this list</span>
+        : <div style={{padding: '10px', color: '#9c9c9c'}}>No tasks in this list</div>
 
     /* useEffect(() => {
          if (demo) {
@@ -65,15 +67,17 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) =
      }, [dispatch, todolist.id, demo])*/
 
     const renderFilterButton = (title: string, buttonFilter: FilterType) => {
-        return  <Button size={'small'} variant={'contained'} color={todolist.filter === buttonFilter ? 'secondary' : 'primary'}
-                        onClick={() => filterTasksHandler(buttonFilter)}>{title}</Button>
+        return <Button size={'small'} variant={'contained'}
+                       color={todolist.filter === buttonFilter ? 'secondary' : 'primary'}
+                       onClick={() => filterTasksHandler(buttonFilter)}>{title}</Button>
     }
 
     return (
-        <div>
-            <h3>
+        <Paper elevation={3} style={{padding: '20px', margin: '5px', position: 'relative'}}>
+            <h3 style={{wordWrap: 'break-word'}}>
                 <EditableSpan value={todolist.title} onChange={editTodolistTitleHandler} disabled={isDisabled}/>
-                <IconButton onClick={removeTodolistHandler} color={'secondary'} disabled={isDisabled}>
+                <IconButton onClick={removeTodolistHandler} color={'secondary'} disabled={isDisabled}
+                            style={{position: 'absolute', right: '5px', top: '5px'}}>
                     <Delete/>
                 </IconButton>
             </h3>
@@ -86,6 +90,6 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) =
                 {renderFilterButton('Active', 'active')}
                 {renderFilterButton('Completed', 'completed')}
             </div>
-        </div>
+        </Paper>
     );
 })
