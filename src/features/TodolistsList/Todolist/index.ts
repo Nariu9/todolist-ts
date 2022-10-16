@@ -1,5 +1,4 @@
 import {todolistsAsyncActions, todolistsSlice} from './todolists-reducer'
-import {Todolist} from './Todolist'
 
 const todolistsActions = {
     ...todolistsAsyncActions,
@@ -8,4 +7,4 @@ const todolistsActions = {
 
 const todolistsReducer = todolistsSlice.reducer
 
-export {todolistsActions, todolistsReducer, Todolist}
+export {todolistsActions, todolistsReducer}

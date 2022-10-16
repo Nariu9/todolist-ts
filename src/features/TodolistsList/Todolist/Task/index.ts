@@ -1,5 +1,4 @@
 import {tasksAsyncActions, tasksSlice} from './tasks-reducer'
-import {Task} from './Task'
 
 const tasksActions = {
     ...tasksAsyncActions,
@@ -8,4 +7,4 @@ const tasksActions = {
 
 const tasksReducer = tasksSlice.reducer
 
-export {tasksActions, tasksReducer, Task}
+export {tasksActions, tasksReducer}

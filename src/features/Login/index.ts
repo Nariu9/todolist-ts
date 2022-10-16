@@ -1,5 +1,4 @@
 import {authAsyncActions, authSlice} from './auth-reducer';
-import {Login} from './Login'
 
 const authActions = {
     ...authAsyncActions,
@@ -8,4 +7,4 @@ const authActions = {
 
 const authReducer = authSlice.reducer
 
-export {authActions, authReducer, Login}
+export {authActions, authReducer}
