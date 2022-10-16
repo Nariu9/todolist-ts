@@ -1,5 +1,6 @@
 import React, {ChangeEvent, FC, KeyboardEvent, memo, useState} from 'react';
-import {IconButton, TextField} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
 import {AddBox} from '@mui/icons-material';
 
 
@@ -42,8 +43,9 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, disabled}) 
                        onKeyDown={onKeyDownHandler}
                        error={!!error}
                        helperText={error}
-                       disabled={disabled}/>
-            <IconButton onClick={addTaskHandler} color={'primary'} disabled={disabled}>
+                       disabled={disabled}
+                       style={{width: '80%'}}/>
+            <IconButton onClick={addTaskHandler} color={'primary'} disabled={disabled} style={{marginLeft: '5px'}}>
                 <AddBox/>
             </IconButton>
         </div>
