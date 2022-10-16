@@ -1,17 +1,16 @@
-import {authAPI, FieldsErrorsType, LoginParamsType, ResultCodes} from '../../api/todolists-api';
-import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
+import {authAPI, LoginParamsType, ResultCodes} from '../../api/todolists-api';
+import {handleServerAppError, handleServerNetworkError} from '../../common/utils/error-utils';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {AxiosError} from 'axios';
 import {todolistsActions} from '../TodolistsList/Todolist';
-import {appActions} from '../../app';
-import {setAppStatus} from '../../app/app-reducer';
-import {ThunkErrorType} from '../../app/store';
+import {ThunkErrorType} from '../Application/AppTypes';
+import {appActions} from '../CommonActions/AppActions';
 
 const {wipeTodolistsData} = todolistsActions
-// const {setAppStatus} = appActions
+const {setAppStatus} = appActions
 
 // thunk
-export const login = createAsyncThunk<undefined, LoginParamsType, ThunkErrorType>('auth/login', async (param, thunkAPI) => {
+const login = createAsyncThunk<undefined, LoginParamsType, ThunkErrorType>('auth/login', async (param, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     dispatch(setAppStatus({status: 'loading'}))
     try {
@@ -30,7 +29,7 @@ export const login = createAsyncThunk<undefined, LoginParamsType, ThunkErrorType
     }
 })
 
-export const logout = createAsyncThunk('auth/logout', async (arg, thunkAPI) => {
+const logout = createAsyncThunk('auth/logout', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     dispatch(setAppStatus({status: 'loading'}))
     try {
@@ -63,13 +62,12 @@ export const authSlice = createSlice({
         }
     },
     extraReducers: builder => {
-        builder.addCase(login.fulfilled, (state) => {
-            state.isLoggedIn = true
-        })
-        builder.addCase(logout.fulfilled, (state) => {
-            state.isLoggedIn = false
-        })
+        builder
+            .addCase(login.fulfilled, (state) => {
+                state.isLoggedIn = true
+            })
+            .addCase(logout.fulfilled, (state) => {
+                state.isLoggedIn = false
+            })
     }
 })
-
-export const {setLoggedIn} = authSlice.actions
