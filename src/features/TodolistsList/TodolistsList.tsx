@@ -1,12 +1,12 @@
 import React, {FC, useCallback, useEffect} from 'react';
 import {useActions, useAppSelector} from '../../app/hooks';
-import {Todolist} from './Todolist';
+import {Todolist, todolistsActions} from './Todolist';
 import {AddItemForm} from '../../components/AddItemForm';
-import {Grid, Paper} from '@mui/material';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import {Navigate} from 'react-router-dom';
 import {selectIsLoggedIn} from '../Login/authSelectors';
 import {selectTodolists} from './Todolist/todolistSelectors';
-import {todolistsActions} from './Todolist';
 
 type TodolistsListPropsType = {
     demo?: boolean
@@ -32,11 +32,11 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo = false}) => {
     const todolistsToRender = todolists.map(tl => {
         return (
             <Grid item key={tl.id}>
-                <Paper elevation={3} style={{padding: '20px'}}>
+                <Box style={{width: '290px'}}>
                     <Todolist key={tl.id}
                               todolist={tl}
                               demo={demo}/>
-                </Paper>
+                </Box>
             </Grid>
         )
     })
@@ -46,10 +46,10 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo = false}) => {
     }
 
     return <>
-        <Grid container style={{padding: '20px 0 20px 20px'}}>
+        <Grid container style={{padding: '20px 0 10px 20px'}}>
             <AddItemForm addItem={addTodolistHandler}/>
         </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
             {todolistsToRender}
         </Grid>
     </>
