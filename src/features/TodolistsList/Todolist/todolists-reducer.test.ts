@@ -1,21 +1,21 @@
-import {
-    addTodolist,
-    changeFilter,
-    changeTodolistEntityStatus,
-    changeTodolistTitle,
-    fetchTodolists,
-    FilterType,
-    removeTodolist,
-    TodolistDomainType,
-} from './todolists-reducer';
+import {FilterType, TodolistDomainType,} from './todolists-reducer';
 import {v1} from 'uuid';
-import {RequestStatusType} from '../../../app/app-reducer';
-import {todolistsReducer} from './index';
+import {RequestStatusType} from '../../Application/application-reducer';
+import {todolistsActions, todolistsReducer} from './index';
 
 
 let todolistId1: string
 let todolistId2: string
 let startState: TodolistDomainType[] = []
+
+const {
+    addTodolist,
+    changeFilter,
+    changeTodolistEntityStatus,
+    changeTodolistTitle,
+    fetchTodolists,
+    removeTodolist
+} = todolistsActions
 
 beforeEach(() => {
     todolistId1 = v1();

@@ -1,16 +1,13 @@
-import {
-    addTask,
-    changeTaskEntityStatus,
-    fetchTasks,
-    removeTask,
-    TasksStateType,
-    updateTasks
-} from './tasks-reducer';
-import {addTodolist, fetchTodolists, removeTodolist} from '../todolists-reducer';
+import {TasksStateType,} from './tasks-reducer';
 import {TaskPriorities, TaskStatuses} from '../../../../api/todolists-api';
-import {tasksReducer} from './index';
+import {tasksActions, tasksReducer} from './index';
+import {todolistsActions} from '../index';
 
 let startState: TasksStateType = {}
+
+const {addTask, changeTaskEntityStatus, fetchTasks, removeTask, updateTasks} = tasksActions
+const {addTodolist, fetchTodolists, removeTodolist} = todolistsActions
+
 beforeEach(() => {
     startState = {
         'todolistId1': [

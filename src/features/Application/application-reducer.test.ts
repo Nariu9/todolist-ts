@@ -1,11 +1,9 @@
-import {
-    AppInitialStateType,
-    changeAppTheme,
-    initializeApp,
-    setAppError,
-    setAppStatus
-} from './app-reducer';
+import {appAsyncActions, AppInitialStateType} from './application-reducer';
 import {appReducer} from './index';
+import {appActions} from '../CommonActions/AppActions';
+
+const {changeAppTheme, setAppError, setAppStatus} = appActions
+const {initializeApp} = appAsyncActions
 
 let startState: AppInitialStateType
 
@@ -40,7 +38,7 @@ test('correct error should be set', () => {
 });
 
 test('isInitialized property should be changed', () => {
-    const endState = appReducer(startState, initializeApp.fulfilled(undefined , 'requestId', undefined))
+    const endState = appReducer(startState, initializeApp.fulfilled(undefined, 'requestId', undefined))
 
     expect(endState.isInitialized).toBe(true);
 });
