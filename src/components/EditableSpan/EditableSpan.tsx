@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
-import {TextField} from '@mui/material';
+import TextField from '@mui/material/TextField';
 
 type EditableSpanPropsType = {
     value: string
@@ -36,5 +36,5 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
                    onBlur={offEditMode}
                    onKeyDown={onKeyDownHandler}
                    autoFocus/>
-        : <span onDoubleClick={onEditMode}>{props.value}</span>
+        : <span onDoubleClick={onEditMode} style={{overflowWrap: 'anywhere'}}>{props.value}</span>
 })
