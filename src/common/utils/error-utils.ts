@@ -1,11 +1,11 @@
-import {AppDispatch} from '../app/store';
-import {setAppError, setAppStatus} from '../app/app-reducer';
-import {ResponseType} from '../api/todolists-api';
+import {ResponseType} from '../../api/todolists-api';
 import {ThunkDispatch} from 'redux-thunk';
 import {AnyAction} from 'redux';
-// import {appActions} from '../app';
+import {AppDispatch} from '../../features/Application/AppTypes';
+import {appActions} from '../../features/CommonActions/AppActions';
 
-// const {setAppStatus, setAppError} = appActions
+
+const {setAppStatus, setAppError} = appActions
 
 export const handleServerNetworkError = (error: { message: string }, dispatch: AppDispatch | ThunkDispatch<unknown, unknown, AnyAction>) => {
     dispatch(setAppStatus({status: 'failed'}))
