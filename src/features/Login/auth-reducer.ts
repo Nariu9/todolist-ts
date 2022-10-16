@@ -5,14 +5,13 @@ import {AxiosError} from 'axios';
 import {todolistsActions} from '../TodolistsList/Todolist';
 import {appActions} from '../../app';
 import {setAppStatus} from '../../app/app-reducer';
+import {ThunkErrorType} from '../../app/store';
 
 const {wipeTodolistsData} = todolistsActions
 // const {setAppStatus} = appActions
 
 // thunk
-export const login = createAsyncThunk<undefined, LoginParamsType, {
-    rejectValue: { errors: string[], fieldsErrors?: FieldsErrorsType[] }
-}>('auth/login', async (param, thunkAPI) => {
+export const login = createAsyncThunk<undefined, LoginParamsType, ThunkErrorType>('auth/login', async (param, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     dispatch(setAppStatus({status: 'loading'}))
     try {
