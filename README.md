@@ -10,7 +10,7 @@ Reflection of those things that need to be done, bought or just remembered.
 
 * TypeScript
 * React
-* Redux
+* Redux-Toolkit
 * Redux-Thunk
 * Axios
 * Formik
