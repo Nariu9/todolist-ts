@@ -30,7 +30,7 @@ export const appAsyncActions = {initializeApp}
 export const appSlice = createSlice({
     name: 'app',
     initialState: {
-        colorTheme: 'dark' as ColorThemeType,
+        colorTheme: 'light' as ColorThemeType,
         status: 'idle' as RequestStatusType,
         error: null as null | string,
         isInitialized: false
