@@ -39,10 +39,10 @@ function App({demo = false}: AppPropsType) {
     const {initializeApp} = useActions(appAsyncActions)
 
     useEffect(() => {
-        if (!demo) {
+        if (!demo && !isInitialized) {
             initializeApp()
         }
-    }, [initializeApp, demo])
+    }, [initializeApp, demo, isInitialized])
 
     //color theme logic
     const theme = createTheme({

@@ -23,8 +23,8 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo = false}) => {
         if (demo || !isLoggedIn) {
             return
         }
-        fetchTodolists()
-    }, [fetchTodolists, demo, isLoggedIn])
+        todolists.length === 0 && fetchTodolists()
+    }, [todolists.length, fetchTodolists, demo, isLoggedIn])
 
     const addTodolistHandler = useCallback((todolistTitle: string) => {
         addTodolist(todolistTitle)
