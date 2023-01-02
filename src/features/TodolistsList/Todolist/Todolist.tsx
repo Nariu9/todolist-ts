@@ -21,7 +21,6 @@ type TodolistPropsType = {
 
 
 export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) => {
-    console.log('Todolist called')
 
     let tasks = useAppSelector(selectTasks(todolist.id))
     const {addTask} = useActions(tasksActions)

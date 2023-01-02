@@ -9,7 +9,6 @@ type AddItemFormPropsType = {
     disabled?: boolean
 }
 export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, disabled}) => {
-    console.log('AddItemForm called')
 
     const [itemTitle, setItemTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
