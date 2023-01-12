@@ -1,7 +1,8 @@
 import {AppThunk} from './store';
 import {authAPI, ResultCodes} from '../api/todolists-api';
-import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 import {setLoggedInAC} from '../features/Login/auth-reducer';
+import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
+import {AxiosError} from 'axios';
 
 const initialState = {
     colorTheme: 'dark' as ColorThemeType,
@@ -32,21 +33,19 @@ export const setAppErrorAC = (error: null | string) => ({type: 'APP/SET-ERROR', 
 export const setAppInitializedAC = (value: boolean) => ({type: 'APP/SET-INITIALIZED', value} as const)
 
 //thunk creators
-export const initializeAppTC = (): AppThunk => (dispatch) => {
-    authAPI.me()
-        .then((res) => {
-            if (res.data.resultCode === ResultCodes.successfully) {
-                dispatch(setLoggedInAC(true))
-            } else {
-                handleServerAppError(res.data, dispatch)
-            }
-        })
-        .catch((e) => {
-            handleServerNetworkError(e, dispatch)
-        })
-        .finally(() => {
-            dispatch(setAppInitializedAC(true))
-        })
+export const initializeAppTC = (): AppThunk => async (dispatch) => {
+    try {
+        const res = await authAPI.me()
+        if (res.data.resultCode === ResultCodes.successfully) {
+            dispatch(setLoggedInAC(true))
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
+    } catch (e) {
+        handleServerNetworkError(e as AxiosError<{ message?: string }>, dispatch)
+    } finally {
+        dispatch(setAppInitializedAC(true))
+    }
 }
 
 // types
