@@ -102,7 +102,7 @@ export type TaskType = {
     deadline: string
     addedDate: string
 }
-type GetTasksType = {
+export type GetTasksType = {
     items: TaskType[]
     totalCount: number
     error: string
