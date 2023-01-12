@@ -1,10 +1,11 @@
 import React, {ChangeEvent, memo, useCallback} from 'react';
-import {removeTasksTC, TaskDomainType, updateTasksTC} from '../../tasks-reducer';
+import {TaskDomainType, updateTasksTC} from '../../tasks-reducer';
 import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
 import {TaskStatuses} from '../../../../api/todolists-api';
 import {useAppDispatch} from '../../../../app/hooks';
 import {Checkbox, IconButton, ListItem} from '@mui/material';
 import {Delete} from '@mui/icons-material';
+import {removeTask} from '../../tasks-sagas';
 
 type TaskPropsType = {
     task: TaskDomainType
@@ -17,7 +18,7 @@ export const Task: React.FC<TaskPropsType> = memo(({task, todolistId, disabled})
     const isDisabled = task.entityStatus === 'loading'
 
     const removeTasksHandler = () => {
-        dispatch(removeTasksTC(todolistId, task.id))
+        dispatch(removeTask(todolistId, task.id))
     }
 
     const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {

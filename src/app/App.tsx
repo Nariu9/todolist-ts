@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {changeAppThemeAC, initializeAppTC} from './app-reducer';
+import {changeAppThemeAC} from './app-reducer';
 import {useAppDispatch, useAppSelector} from './hooks';
 import {TodolistsList} from '../features/TodolistsList/TodolistsList';
 import {
     AppBar,
-    Button, CircularProgress,
+    Button,
+    CircularProgress,
     Container,
     createTheme,
     CssBaseline,
@@ -20,6 +21,7 @@ import {ErrorSnackbars} from '../components/ErrorSnackbar/ErrorSnackbar';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {Login} from '../features/Login/Login';
 import {logoutTC} from '../features/Login/auth-reducer';
+import {initializeApp} from './app-sagas';
 
 type AppPropsType = {
     demo?: boolean
@@ -31,7 +33,7 @@ function App({demo = false}: AppPropsType) {
     const isInitialized = useAppSelector(state => state.app.isInitialized)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     useEffect(() => {
-        dispatch(initializeAppTC())
+        dispatch(initializeApp())
     }, [dispatch])
 
     //color theme logic

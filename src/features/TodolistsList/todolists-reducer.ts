@@ -2,7 +2,7 @@ import {ResultCodes, todolistsAPI, TodolistType} from '../../api/todolists-api';
 import {AppThunk} from '../../app/store';
 import {RequestStatusType, setAppStatusAC} from '../../app/app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
-import {fetchTasksTC} from './tasks-reducer';
+import {fetchTasks} from './tasks-sagas';
 
 
 const initialState: TodolistDomainType[] = []
@@ -63,7 +63,7 @@ export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
             return res.data
         })
         .then((todolists) => {
-            todolists.forEach((tl) => dispatch(fetchTasksTC(tl.id)))
+            todolists.forEach((tl) => dispatch(fetchTasks(tl.id)))
         })
         .catch((e) => {
             handleServerNetworkError(e, dispatch)
