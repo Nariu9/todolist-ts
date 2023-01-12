@@ -4,6 +4,10 @@ import {TodolistsActionsType, todolistsReducer} from '../features/TodolistsList/
 import {AppActionsType, appReducer} from './app-reducer';
 import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {authReducer} from '../features/Login/auth-reducer';
+import createSagaMiddleware from 'redux-saga'
+import {all} from 'redux-saga/effects'
+import {tasksWatcherSaga} from '../features/TodolistsList/tasks-sagas';
+import {appWatcherSaga, initializeApp} from './app-sagas';
 
 declare global {
     interface Window {
@@ -18,19 +22,25 @@ const rootReducer = combineReducers({
     auth: authReducer
 })
 
+const sagaMiddleware = createSagaMiddleware()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
+export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk, sagaMiddleware)))
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
 // export type RootState = ReturnType<typeof store.getState>
 
-
-type StoreActionsType = TodolistsActionsType | TasksActionsType | AppActionsType
+type StoreActionsType = TodolistsActionsType | TasksActionsType | AppActionsType | ReturnType<typeof initializeApp>
 
 
 export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, StoreActionsType>
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AnyAction>
+
+sagaMiddleware.run(rootWatcher)
+
+function* rootWatcher() {
+    yield all([appWatcherSaga(), tasksWatcherSaga()])
+}
 
 // @ts-ignore
 window.store = store
