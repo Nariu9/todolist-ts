@@ -1,12 +1,10 @@
 import React, {FC, memo, useCallback, /*useEffect*/} from 'react';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
-import {addTasksTC, /*fetchTasksTC*/} from '../tasks-reducer';
+import { /*fetchTasksTC*/} from '../tasks-reducer';
 import {
     changeFilterAC,
-    changeTodolistTitleTC,
     FilterType,
-    removeTodolistTC,
     TodolistDomainType
 } from '../todolists-reducer';
 import {Task} from './Task/Task';
@@ -14,6 +12,8 @@ import {TaskStatuses} from '../../../api/todolists-api';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import {Button, IconButton, List} from '@mui/material';
 import {Delete} from '@mui/icons-material';
+import {deleteTodoList, updateTodoList} from '../todolists-sagas';
+import {createTask} from '../tasks-sagas';
 
 type TodolistPropsType = {
     todolist: TodolistDomainType
@@ -43,16 +43,16 @@ export const Todolist: FC<TodolistPropsType> = memo(({todolist, demo = false}) =
     }, [dispatch, todolist.id])
 
     const removeTodolistHandler = () => {
-        dispatch(removeTodolistTC(todolist.id))
+        dispatch(deleteTodoList(todolist.id))
     }
 
     const addTaskHandler = useCallback((taskTitle: string) => {
-        dispatch(addTasksTC(todolist.id, taskTitle))
+        dispatch(createTask(todolist.id, taskTitle))
     }, [dispatch, todolist.id])
 
 
     const editTodolistTitleHandler = useCallback((newTitle: string) => {
-        dispatch(changeTodolistTitleTC(todolist.id, newTitle))
+        dispatch(updateTodoList(todolist.id, newTitle))
     }, [dispatch, todolist.id])
 
     const tasksToRender = tasks && tasks.length

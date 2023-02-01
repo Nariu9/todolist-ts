@@ -8,6 +8,7 @@ import createSagaMiddleware from 'redux-saga'
 import {all} from 'redux-saga/effects'
 import {tasksWatcherSaga} from '../features/TodolistsList/tasks-sagas';
 import {appWatcherSaga, initializeApp} from './app-sagas';
+import {todoListsWatSaga} from '../features/TodolistsList/todolists-sagas';
 
 declare global {
     interface Window {
@@ -39,7 +40,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateTy
 sagaMiddleware.run(rootWatcher)
 
 function* rootWatcher() {
-    yield all([appWatcherSaga(), tasksWatcherSaga()])
+    yield all([appWatcherSaga(), tasksWatcherSaga(), todoListsWatSaga()])
 }
 
 // @ts-ignore

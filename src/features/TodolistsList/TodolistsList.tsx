@@ -1,10 +1,10 @@
 import React, {FC, useCallback, useEffect} from 'react';
-import {addTodolistTC, fetchTodolistsTC} from './todolists-reducer';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {Todolist} from './Todolist/Todolist';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Grid, Paper} from '@mui/material';
 import {Navigate} from 'react-router-dom';
+import {createTodoList, fetchTodoLists} from './todolists-sagas';
 
 type TodolistsListPropsType = {
     demo?: boolean
@@ -20,11 +20,11 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({demo = false}) => {
         if (demo || !isLoggedIn) {
             return
         }
-        dispatch(fetchTodolistsTC())
+        dispatch(fetchTodoLists())
     }, [dispatch, demo, isLoggedIn])
 
     const addTodolist = useCallback((todolistTitle: string) => {
-        dispatch(addTodolistTC(todolistTitle))
+        dispatch(createTodoList(todolistTitle))
     }, [dispatch])
 
     const todolistsToRender = todolists.map(tl => {

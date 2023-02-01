@@ -153,7 +153,7 @@ export const updateTasksTC = (todolistId: string, taskId: string, model: UpdateD
 }
 
 // types
-type UpdateDomainTaskModelType = {
+export type UpdateDomainTaskModelType = {
     title?: string
     description?: string
     status?: number
