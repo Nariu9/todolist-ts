@@ -15,7 +15,7 @@ export const authAPI = {
         return instance.post<'', AxiosResponse<ResponseType<{ id: number }>>, LoginParamsType>('/auth/login', data)
     },
     me() {
-        return instance.get<'', AxiosResponse<ResponseType<{ id: number, email: string, login: string }>>, {}>('auth/me')
+        return instance.get<'', MeResponseType, {}>('auth/me')
     },
     logout() {
         return instance.delete<'', AxiosResponse<ResponseType>, {}>('/auth/login')
@@ -115,3 +115,5 @@ type UpdateTaskModelType = {
     startDate: string
     deadline: string
 }
+
+export type MeResponseType = AxiosResponse<ResponseType<{ id: number, email: string, login: string }>>;
